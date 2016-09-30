@@ -1,4 +1,4 @@
-# [Nombre del juego]
+# [Marvel JRPG]
 
 ## Sobre las personas
 
@@ -9,10 +9,11 @@
 
 ### Integrantes del equipo
 
-* XXXX
-* XXXX
-* XXXX
-* XXXX
+* Francés Luca Nahuel.
+* Calcagno Leandro.
+* De Arias Axel.
+* Fernandez Julian Gonzalo.
+* Trenchi Martin.
 
 ## Sobre la tecnología
 
