@@ -9,7 +9,7 @@
 
 ### Integrantes del equipo
 
-* Francés Luca Nahuel.([francesluca](https://github.com/francesluca))
+* Francés Luca Nahuel. ([francesluca](https://github.com/francesluca))
 * Calcagno Leandro. ([leandroCalca](https://github.com/leandroCalca))
 * De Arias Axel. ([AxelDeArias](https://github.com/AxelDeArias))
 * Fernandez Julian Gonzalo. ([julian147](https://github.com/julian147))
