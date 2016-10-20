@@ -1,71 +1,60 @@
+
 #Historias de usuario:
 
-Como usuario puedo crear mi personaje en base a cuatro razas.
+Como usuario quiero poder crear mi personaje en base a cuatro razas para definir mis stasts base.
 
-Como usuario puedo explorar todo el mapa.
+Como usuario quiero explorar todo el mapa para encontrar diversos ítems, personajes y npc.
 
-Como usuario puedo atacar a otro personaje por turnos.
+Como usuario quiero atacar a otro personaje por turnos para matarlo, ganar experiencia e ítems.
 
-Como usuario puedo ganar experiencia y subir de nivel.
+Como usuario quiero ganar experiencia y subir de nivel para mejorar mis stats.
 
-Como usuario puedo equipar mi personaje.
+Como usuario quiero equipar mi personaje con ítems para mejorar mis stats.
 
-Como usuario puedo formar parte de una alianza para ganar mas experiencia en los combates.
+Como usuario quiero formar parte de una alianza para ganar más experiencia en los combates.
 
-Como usuario puedo ganar o perder salud.
+Como usuario quiero respawnear si muero en un combate para seguir jugando.
 
-Como usuario puedo morir en un ataque y repawnear.
+Como usuario quiero ganar el mejor ítem de mi contrincante si lo mato en combate para poder equiparlo.
 
-Como usuario, si muero, pierdo mi mejor item.
+Como usuario quiero disponer de un menu de creación de personajes, para eligir raza, casta y asignar un nombre a mi personaje nuevo.
 
-Como usuario no puedo desequipar un item.
+Como jugador quiero poder entrar en una zona neutral para que no me puedan atacar.
 
-Como usuario tengo caracteristicas especiales de a cuerdo a la raza que elegí.
+Como jugador quiero decidir si participar del combate o huir del mismo, para formar mi estrategia de juego.
 
-El item que pierdo al morir, queda a dispocicion de los otros jugadores, para que lo puedan equipar.
+Como jugador quiero que al apretar teclas o mover el mouse, mi personaje efectue diversas acciones para poder controlarlo durante el juego.
 
-Como usuario dispongo de un menu para crear mi personaje, donde elijo raza, casta y asigno un nombre.
-
-Como personaje quiero poder entrar en una zona neutral donde estoy seguro que no me pueden atacar.
-
-Como personaje quiero decidir si participar del combate o huir del mismo.
-
-Al mover el cursor y presionar las teclas, el personaje realizará distintas acciones.
-
-La calidad del item que arroja un npc al morir, dependerá del nivel del npc.
+Como usuario quiero que la calidad del ítem que arroja un npc, dependa de lo dificil que es de matar, para obtener una recompensa acorde a la actividad realizada.
 
 #Criterios de aceptación:
 
-El personaje debe morir al quedarse sin salud.
+Dado un nuevo personaje, cuando lo estoy creando, entonces puedo elegir una raza y esta tiene stats base propios.
 
-Al morir, el personaje debe perder su mejor item.
+Dado un personaje, cuando se mueve por el mapa entonces lo puede explorar en su totalidad.
 
-El personaje no puede atacar si no posee energía.
+Dado un personaje cuando se mueve por el mapa entonces no se debe ir de los límites del mismo.
 
-Se debe incrementar la experiencia al ganar un combate.
+Dado un combate por turnos, cuando un personaje gana, entonces se queda con en mejor ítem de su contrincante.
 
-Al explorar el mapa, nunca me salgo de los límites del mismo.
+Dado un personaje, cuando gana un combate por turnos entonces gana experiencia.
 
-Al equipar un item, suma o resta stats del personaje.
+Dado un personaje, cuando gana una cantidad predefinida de experiencia entonces sube de nivel.
 
-Al equipar un ítem, si ya tenia otros items equipados, los stats se acumulan (incrementan o decrementan).
+Dado un personaje, cuando toma un ítem, entonces se modifican sus stats.
 
-La recuperación de la vida y la energía, dependen de cada raza.
+Dada una alianza, cuando los personajes que la integran combaten juntos, entonces se multiplica la experiencia ganada.
 
-Se multiplica el incremento de experiencia si se combate junto con miembros de la alianza.
+Dado un personaje, cuando muere, entonces debe respawnear.
 
-Al tomar un item, el mismo queda equipado.
+Dado un personaje, si pierde en combate entonces debe perder su mejor ítem y dejarlo a dispocición de sus contrincantes.
 
-Al tomar un item, deja de estar en el mapa.
+Dado un personaje nuevo, cuando lo estoy creando, entonces lo hago desde un menu.
 
-Al respawnear, el personaje debe tener la salud al máximo.
+Dado un personaje, cuando entra en la zona neutral entonces no debe poder atacar.
 
-Al ser atacado, el personaje debe perder vida.
+Dado un personaje, cuando es invitado a combatir, entonces debe poder decidir si entrar en el combate o no.
 
-Al atacar, el personaje debe perder energia.
+Dado un personaje, cuando se aplican comandos mediante mouse o teclado, entonces el personaje responde con una acción predeterminada.
 
-Se respawnea en un lugar distinto al lugar de muerte.
-
-Se respeta el orden de ataque en el combate por turnos.
-
-En la zona neutral, no se puede atacar.
+Dado un personaje, al ganar un combate contra un npc entonces el mismo debe arrojar un item acorde a la diferencia de xp del npc y el personaje en si.
