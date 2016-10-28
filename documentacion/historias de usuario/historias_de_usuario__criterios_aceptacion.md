@@ -9,7 +9,7 @@
 2.2 -Dado un personaje cuando se mueve por el mapa entonces no se debe ir de los límites del mismo.
 
 3-Como personaje quiero atacar a otro personaje por turnos para matarlo, ganar experiencia e ítems.
-3.1 -Dado un combate por turnos, cuando un personaje gana, entonces se queda con en mejor ítem de su contrincante.
+3.1 -Dado un combate por turnos, cuando un personaje gana, entonces gana experiencia.
 
 4-Como usuario quiero ganar experiencia y subir de nivel para mejorar mis stats.
 4.1 -Dado un personaje, cuando gana un combate por turnos entonces gana experiencia.
