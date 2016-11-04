@@ -278,7 +278,7 @@ public abstract class PC extends Personaje
 	{
 		if(puntosHabilidadDisponibles<=0)
 		{
-			System.out.println("No tienes suficientes puntos de habilidad");
+			//No hay suf puntos de habilidad
 			return;
 		}
 		puntosHabilidadDisponibles--;
@@ -289,7 +289,7 @@ public abstract class PC extends Personaje
 	{
 		if(puntosHabilidadDisponibles<=0)
 		{
-			System.out.println("No tienes suficientes puntos de habilidad");
+			//No hay suf puntos de habilidad
 			return;
 		}
 		puntosHabilidadDisponibles--;
@@ -300,7 +300,7 @@ public abstract class PC extends Personaje
 	{
 		if(puntosHabilidadDisponibles<=0)
 		{
-			System.out.println("No tienes suficientes puntos de habilidad");
+			//No hay suf puntos de habilidad
 			return;
 		}
 		puntosHabilidadDisponibles--;
@@ -388,26 +388,7 @@ public abstract class PC extends Personaje
 	
 	public void mostrarPersonaje()
 	{
-		System.out.println("***************************");
-		System.out.println(nombre+":nivel "+getNivel()+" Exp:"+exp+"/"+requisitoExp[getNivel()-1]); 
-		System.out.println("("+expRestante()+" puntos para el siguiente nivel)");
-		System.out.println("---------------------------");
-		System.out.println("Vida Maxima:"+calcularVidaMaxima());
-		System.out.println("Energia Maxima:"+calcularEnergiaMax());
-		System.out.println("Ataque:"+calcularAtaque());
-		System.out.println("Daño Magico:"+calcularDanoMagico());
-		System.out.println("Defensa:"+calcularDefensa());
-		System.out.println("Velocidad:"+calcularVelocidad());
-		System.out.println("Evasion:"+calcularEvasion());
-		System.out.println("---------------------------");
-		System.out.println("Puntos de habilidad:\nFuerza:"+fuerza+"\nDestreza:"+destreza+"\nInteligencia:"+inteligencia);
-		System.out.println("Tienes "+puntosHabilidadDisponibles+" puntos de habilidad disponibles");
-		System.out.println("---------------------------");
-		System.out.println("Items:\nCabeza:"+mostrarItemCabeza());
-		System.out.println("Pecho:"+mostrarItemPecho());
-		System.out.println("Mano Derecha:"+mostrarItemManoDer());
-		System.out.println("Mano Izquierda:"+mostrarItemManoIzq());
-		System.out.println("***************************");
+		
 	}
 	
 }
