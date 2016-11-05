@@ -51,7 +51,7 @@
          "aliados": [{"nombre": "Thor", "nivel": 4}, {"nombre": "Wolverine", nivel: 3}]}}
 ###7-Loguearse:
 	cliente: solicita conexion con el servidor.
-    	{"Loguearse": {"solicitante": "Cliente", "solicitado": "Servidor"}}
+    	{"Loguearse": {"solicitante": "Cliente", "solicitado": "Servidor",},{"Iniciar sesion": "usuario y contraeña"}}
 
 	servidor: verifica usuario y contraseña.
-    	{"Loguearse": {"Iniciar sesion": "usuario y contraeña"}}
+    	{"setEstadoServidor": {"Estado": "abierto"}}
