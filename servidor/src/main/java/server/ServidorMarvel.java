@@ -11,6 +11,7 @@ public class ServidorMarvel {
 	private MarvelDB marvel;
 	private AtencionCliente atCliente;
 	private ServerSocket server;
+	Socket socket = null;
 	private boolean enFuncionamiento = false;
 	
 	public ServidorMarvel(int puerto) {
@@ -35,16 +36,36 @@ public class ServidorMarvel {
 	public void runServer() {
 		enFuncionamiento = true;
 		
+		
 		while(enFuncionamiento) {
 			try {
-				Socket socket = server.accept();
+				socket = server.accept();
 				
 				atCliente = new AtencionCliente(socket, marvel);
 				atCliente.start();
+				
 			} catch (IOException e) {
-				enFuncionamiento = false;
+				try {
+					closeServer();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void closeServer() throws IOException {
+		enFuncionamiento = false;
+		
+		if(marvel != null)
+			marvel.close();
+		
+		if(socket != null)
+			socket.close();
+		
+		if(server != null)
+			server.close();
 	}
 }
