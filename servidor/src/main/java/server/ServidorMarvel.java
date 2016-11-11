@@ -13,11 +13,12 @@ public class ServidorMarvel {
 	private ServerSocket server;
 	Socket socket = null;
 	private boolean enFuncionamiento = false;
+	private final int PUERTO = 50000;
 	
-	public ServidorMarvel(int puerto) {
+	public ServidorMarvel() {
 		try {
 			marvel = new MarvelDB();
-			server = new ServerSocket(puerto);
+			server = new ServerSocket(PUERTO);
 		} catch (IOException e) {
 			try {
 				if(server != null)

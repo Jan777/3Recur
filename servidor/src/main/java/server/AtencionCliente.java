@@ -22,6 +22,7 @@ public class AtencionCliente extends Thread {
 	public AtencionCliente(Socket socket, MarvelDB marvel) {
 		this.socket = socket;
 		this.marvel = marvel;
+		gson = new Gson();
 
 		try {
 			this.salida = new ObjectOutputStream(socket.getOutputStream());

@@ -11,12 +11,12 @@ public class MarvelDB {
 
 	private final String RUTA = "db/marvelJRPG.db";
 	private Connection conexion;
-	private LoginDB login;
+	private UserDB userDB;
 
 	public void connectDB() {
 		try {
 			conexion = DriverManager.getConnection("jdbc:sqlite:" + RUTA);
-			login = new LoginDB(conexion);
+			userDB = new UserDB(conexion);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -25,7 +25,7 @@ public class MarvelDB {
 
 	public boolean crearUsuario(Usuario user) {
 		try {
-			return login.create(user);
+			return userDB.create(user);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -36,7 +36,7 @@ public class MarvelDB {
 	
 	public boolean buscarUsuario(Usuario user) {
 		try {
-			return login.search(user);
+			return userDB.search(user);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,7 +46,18 @@ public class MarvelDB {
 	
 	public boolean loguearUsuario(Usuario user) {
 		try {
-			return login.loguear(user);
+			return userDB.connect(user);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean desconectarUsuario(Usuario user) {
+		try {
+			return userDB.connect(user);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

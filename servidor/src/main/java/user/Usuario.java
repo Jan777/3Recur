@@ -5,6 +5,11 @@ public class Usuario {
 	private String nombre;
 	private String contraseña;
 	private boolean conectado = false;
+	
+	public Usuario(String nombre, String contraseña) {
+		this.nombre = nombre;
+		this.contraseña = contraseña;
+	}
 
 	public String getNombre() {
 		return nombre;

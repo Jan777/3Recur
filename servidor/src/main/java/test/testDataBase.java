@@ -16,7 +16,7 @@ public class testDataBase {
 		marvel.connectDB();
 		String nombre = "juan";
 		String contraseña = "contraseña1";
-		Usuario user = new Usuario();
+		Usuario user = new Usuario(nombre, contraseña);
 		user.setNombre(nombre);
 		user.setContraseña(contraseña);
 		Assert.assertTrue(marvel.crearUsuario(user));
