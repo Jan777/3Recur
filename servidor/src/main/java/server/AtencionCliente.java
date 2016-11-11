@@ -35,34 +35,48 @@ public class AtencionCliente extends Thread {
 
 	@Override
 	public void run() {
+		String comando;
+		boolean res = false;
 		try {
-			String comando;
-
-			while (!"desconectar".equals(comando = entrada.readUTF())) {
+			while (!"logOut".equals(comando = entrada.readUTF())) {
 
 				switch (comando) {
-					case "registrar":
+					case "singIn":
 						user = gson.fromJson(entrada.readUTF(), Usuario.class);
-						marvel.crearUsuario(user);
+						res = marvel.crearUsuario(user);		
+						responder(res);
 					break;
 					
-					case "loguearse":
+					case "logIn":
 						user = gson.fromJson(entrada.readUTF(), Usuario.class);
-						marvel.loguearUsuario(user);
+						res = marvel.loguearUsuario(user);
+						responder(res);
 					break;
 				}
 			}
+			
+			user = gson.fromJson(entrada.readUTF(), Usuario.class);
+			res = marvel.desconectarUsuario(user);
+			responder(res);
 
 		} catch (IOException e) {
 			close();
 		}
 	}
 
+	private void responder(boolean res) throws IOException {
+		if(res)
+			salida.writeUTF("OK");
+		
+		salida.writeUTF("KO");
+	}
+	
 	public void close() {
 		try {
 			entrada.close();
 			salida.close();
 			socket.close();
+			marvel.desconectarUsuario(user);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
