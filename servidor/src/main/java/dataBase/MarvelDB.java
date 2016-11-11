@@ -13,6 +13,9 @@ public class MarvelDB {
 	private Connection conexion;
 	private UserDB userDB;
 
+	public MarvelDB() {
+		connectDB();
+	}
 	public void connectDB() {
 		try {
 			conexion = DriverManager.getConnection("jdbc:sqlite:" + RUTA);
@@ -57,7 +60,7 @@ public class MarvelDB {
 	
 	public boolean desconectarUsuario(Usuario user) {
 		try {
-			return userDB.connect(user);
+			return userDB.disconnect(user);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

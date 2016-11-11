@@ -35,4 +35,11 @@ public class Usuario {
 	public boolean verEstado() {
 		return conectado;
 	}
+
+	@Override
+	public Usuario clone() throws CloneNotSupportedException {
+		return new Usuario(getNombre(), getContraseña());
+	}
+	
+	
 }

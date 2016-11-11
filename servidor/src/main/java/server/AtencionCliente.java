@@ -1,8 +1,8 @@
 package server;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import com.google.gson.Gson;
@@ -13,8 +13,8 @@ import user.Usuario;
 public class AtencionCliente extends Thread {
 
 	private Socket socket;
-	private ObjectInputStream entrada;
-	private ObjectOutputStream salida;
+	private DataInputStream entrada;
+	private DataOutputStream salida;
 	private MarvelDB marvel;
 	private Usuario user;
 	private Gson gson;
@@ -25,8 +25,8 @@ public class AtencionCliente extends Thread {
 		gson = new Gson();
 
 		try {
-			this.salida = new ObjectOutputStream(socket.getOutputStream());
-			this.entrada = new ObjectInputStream(socket.getInputStream());
+			this.salida = new DataOutputStream(socket.getOutputStream());
+			this.entrada = new DataInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			close();
 			e.printStackTrace();
@@ -38,7 +38,7 @@ public class AtencionCliente extends Thread {
 		String comando;
 		boolean res = false;
 		try {
-			while (!"logOut".equals(comando = entrada.readUTF())) {
+			while (!"logOut".equals((comando = entrada.readUTF()))) {
 
 				switch (comando) {
 					case "singIn":

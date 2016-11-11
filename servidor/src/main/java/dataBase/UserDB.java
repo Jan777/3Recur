@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 
 import user.Usuario;
 
-public class UserDB implements DataAccessObject<Usuario>{
+public class UserDB implements DataAccessObject<Usuario> {
 
 	private Connection conexion;
 	private final String insertSQL = "insert into usuarios (nombre, contraseña) values (?, ?);";
@@ -15,7 +15,7 @@ public class UserDB implements DataAccessObject<Usuario>{
 	private PreparedStatement selectPreparedStatement;
 	private final String connectSQL = "update usuarios set conectado = ? where nombre = ?;";
 	private PreparedStatement updatePreparedStatement;
-	
+
 	public UserDB(Connection conexion) {
 		this.conexion = conexion;
 	}
@@ -23,11 +23,11 @@ public class UserDB implements DataAccessObject<Usuario>{
 	@Override
 	public boolean create(Usuario user) throws Exception {
 		insertPreparedStatement = conexion.prepareStatement(insertSQL);
-		
-		if(search(user)) {
+
+		if (search(user)) {
 			return false;
 		}
-		
+
 		insertPreparedStatement.setString(1, user.getNombre());
 		insertPreparedStatement.setString(2, user.getContraseña());
 		insertPreparedStatement.executeUpdate();
@@ -37,15 +37,16 @@ public class UserDB implements DataAccessObject<Usuario>{
 	@Override
 	public boolean search(Usuario user) throws Exception {
 		selectPreparedStatement = conexion.prepareStatement(selectNombreSQL);
-		
+
 		selectPreparedStatement.setString(1, user.getNombre());
-		
+
 		ResultSet res = selectPreparedStatement.executeQuery();
-		
-		if(res.next()) {
+
+		if (res.next()) {
+			user.setContraseña(res.getString("contraseña"));
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -67,29 +68,31 @@ public class UserDB implements DataAccessObject<Usuario>{
 		selectPreparedStatement.close();
 	}
 
-	public boolean connect(Usuario user) throws Exception{
+	public boolean connect(Usuario user) throws Exception {
 		updatePreparedStatement = conexion.prepareStatement(connectSQL);
-		
-		try {
-			updatePreparedStatement.setInt(1, 1);
-			updatePreparedStatement.setString(2, user.getNombre());
-			user.conectar();
-			return true;
-		} catch (Exception e) {
-			user.desconectar();
+
+		Usuario aux = user.clone();
+		if(!search(aux) || !aux.getContraseña().equals(user.getContraseña()))
 			return false;
-		}
-	}
-	
-	public boolean disconnect(Usuario user) throws Exception{
-		updatePreparedStatement = conexion.prepareStatement(connectSQL);
 		
+		updatePreparedStatement.setInt(1, 1);
+		updatePreparedStatement.setString(2, user.getNombre());
+		user.conectar();
+		updatePreparedStatement.executeUpdate();
+		return true;
+	}
+
+	public boolean disconnect(Usuario user) throws Exception {
+		updatePreparedStatement = conexion.prepareStatement(connectSQL);
+
 		try {
 			updatePreparedStatement.setInt(1, 0);
 			updatePreparedStatement.setString(2, user.getNombre());
-			user.desconectar();
+			user.conectar();
+			updatePreparedStatement.executeUpdate();
 			return true;
 		} catch (Exception e) {
+			user.desconectar();
 			return false;
 		}
 	}

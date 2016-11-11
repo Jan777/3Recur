@@ -1,8 +1,9 @@
 package client;
 
+import java.io.DataInputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import com.google.gson.Gson;
@@ -16,16 +17,17 @@ public class Cliente {
 	//private Personaje pj;
 	private final int PUERTO = 50000;
 	private final String HOST = "localhost";
-	private ObjectInputStream entrada;
-	private ObjectOutputStream salida;
+	private DataInputStream entrada;
+	private DataOutput salida;
 	private Gson gson;
 	
 	public Cliente(String nombre, String contraseña) {
 		try {
 			socket = new Socket(HOST, PUERTO);
 			user = new Usuario(nombre, contraseña);
-			entrada = new ObjectInputStream(socket.getInputStream());
-			salida = new ObjectOutputStream(socket.getOutputStream());
+			entrada = new DataInputStream(socket.getInputStream());
+			salida = new DataOutputStream(socket.getOutputStream());
+			gson = new Gson();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
