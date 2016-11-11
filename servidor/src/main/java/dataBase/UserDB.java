@@ -23,13 +23,15 @@ public class UserDB implements DataAccessObject<Usuario> {
 	@Override
 	public boolean create(Usuario user) throws Exception {
 		insertPreparedStatement = conexion.prepareStatement(insertSQL);
-
-		if (search(user)) {
+		Usuario aux = user.clone();
+		
+		if (search(aux)) {
 			return false;
 		}
 
 		insertPreparedStatement.setString(1, user.getNombre());
 		insertPreparedStatement.setString(2, user.getContraseña());
+		System.out.println(user.getNombre()+user.getContraseña());
 		insertPreparedStatement.executeUpdate();
 		return true;
 	}

@@ -1,10 +1,13 @@
-package server;
+package frame;
 
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import server.ServidorMarvel;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseMotionAdapter;
@@ -60,6 +63,7 @@ public class FrameServer extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setUndecorated(true);
+		setLocationRelativeTo(null);
 		
 		JPanel panelBarra = new JPanel();
 		panelBarra.setBackground(Color.BLACK);

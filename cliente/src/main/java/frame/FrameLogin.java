@@ -11,14 +11,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import client.Cliente;
-
+import frame.DialogLogin;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class FrameLogin extends JFrame {
 
@@ -32,6 +33,8 @@ public class FrameLogin extends JFrame {
 	private JTextField textFieldNombre;
 	private JTextField textFieldContraseña;
 	protected Cliente client;
+	protected JDialog dialog;
+	private static FrameLogin frame;
 
 	/**
 	 * Launch the application.
@@ -40,7 +43,7 @@ public class FrameLogin extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FrameLogin frame = new FrameLogin();
+					frame = new FrameLogin();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -65,13 +68,21 @@ public class FrameLogin extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setUndecorated(true);
+		setLocationRelativeTo(null);
 		
 		JPanel panelBarra = new JPanel();
 		panelBarra.setBackground(new Color(0, 0, 0));
 		panelBarra.setBounds(0, 0, 488, 23);
 		contentPane.add(panelBarra);
-		panelBarra.setLayout(null);
 		panelBarra.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+		panelBarra.setLayout(null);
+		
+		JLabel lblLoginMarvelJrpg = new JLabel("Login Marvel JRPG");
+		lblLoginMarvelJrpg.setFont(new Font("Verdana", Font.BOLD, 12));
+		lblLoginMarvelJrpg.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLoginMarvelJrpg.setForeground(Color.WHITE);
+		lblLoginMarvelJrpg.setBounds(63, 0, 235, 23);
+		panelBarra.add(lblLoginMarvelJrpg);
 		panelBarra.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
@@ -90,14 +101,6 @@ public class FrameLogin extends JFrame {
 		panelPpal.setBounds(10, 34, 550, 400);
 		contentPane.add(panelPpal);
 		panelPpal.setLayout(null);
-		
-		JButton buttonRegistrarse = new JButton("Registrarse");
-		buttonRegistrarse.setForeground(Color.WHITE);
-		buttonRegistrarse.setFocusPainted(false);
-		buttonRegistrarse.setBorderPainted(false);
-		buttonRegistrarse.setBackground(new Color(0, 0, 51));
-		buttonRegistrarse.setBounds(299, 345, 152, 23);
-		panelPpal.add(buttonRegistrarse);
 		
 		JPanel panelLogin = new JPanel();
 		panelLogin.setBackground(Color.DARK_GRAY);
@@ -130,21 +133,53 @@ public class FrameLogin extends JFrame {
 		JButton btnConectarse = new JButton("Conectarse");
 		btnConectarse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(textFieldNombre.getText().equals("") || textFieldContraseña.getText().equals(""))
+					return;
+				
 				client = new Cliente(textFieldNombre.getText(), textFieldContraseña.getText());
 				if(client.logIn()) {
-					System.out.println("usuario conectado");
+					dialog = new DialogLogin(frame, "Felicidades!!", "Se conecto con exito al servidor.", true);
+					dialog.setVisible(true);
 				}
 				
-				else
-					System.out.println("no se encuentra el usuario");
+				else{
+					dialog = new DialogLogin(frame, "ERROR", "El nombre y/o la contrase\u00F1a \r\nson invalidos.", true);
+					dialog.setVisible(true);
+				}
 			}
 		});
+		
 		btnConectarse.setBackground(new Color(0, 0, 51));
 		btnConectarse.setForeground(Color.WHITE);
 		btnConectarse.setBounds(96, 345, 152, 23);
 		panelPpal.add(btnConectarse);
 		btnConectarse.setFocusPainted(false);
 		btnConectarse.setBorderPainted(false);
+		
+		JButton buttonRegistrarse = new JButton("Registrarse");
+		buttonRegistrarse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textFieldNombre.getText().equals("") || textFieldContraseña.getText().equals(""))
+					return;
+				
+				client = new Cliente(textFieldNombre.getText(), textFieldContraseña.getText());
+				if(client.singIn()) {
+					dialog = new DialogLogin(frame, "Felicidades!!", "Se registro con exito.", true);
+					dialog.setVisible(true);
+				}
+				
+				else{
+					dialog = new DialogLogin(frame, "ERROR", "El nombre ya esta en uso", true);
+					dialog.setVisible(true);
+				}
+			}
+		});
+		buttonRegistrarse.setForeground(Color.WHITE);
+		buttonRegistrarse.setFocusPainted(false);
+		buttonRegistrarse.setBorderPainted(false);
+		buttonRegistrarse.setBackground(new Color(0, 0, 51));
+		buttonRegistrarse.setBounds(299, 345, 152, 23);
+		panelPpal.add(buttonRegistrarse);
 		
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(FrameLogin.class.getResource("/img/marvel2.png")));
