@@ -73,7 +73,8 @@ public class MarvelDB {
 
 	public void close() {
 		try {
-			conexion.close();
+			if(conexion != null)
+				conexion.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
