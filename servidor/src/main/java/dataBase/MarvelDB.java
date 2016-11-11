@@ -9,11 +9,11 @@ import user.Usuario;
 
 public class MarvelDB {
 
-	private final String RUTA = "Sqliteman/Bases de datos/marvelJRPG.db";
+	private final String RUTA = "db/marvelJRPG.db";
 	private Connection conexion;
 	private LoginDB login;
 
-	public void connect() {
+	public void connectDB() {
 		try {
 			conexion = DriverManager.getConnection("jdbc:sqlite:" + RUTA);
 			login = new LoginDB(conexion);
@@ -37,6 +37,17 @@ public class MarvelDB {
 	public boolean buscarUsuario(Usuario user) {
 		try {
 			return login.search(user);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean loguearUsuario(Usuario user) {
+		try {
+			return login.loguear(user);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

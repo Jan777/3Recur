@@ -4,6 +4,7 @@ public class Usuario {
 
 	private String nombre;
 	private String contraseña;
+	private boolean conectado = false;
 
 	public String getNombre() {
 		return nombre;
@@ -16,5 +17,13 @@ public class Usuario {
 	}
 	public void setContraseña(String contraseña) {
 		this.contraseña = contraseña;
+	}
+	
+	public void conectar() {
+		this.conectado = true;
+	}
+	
+	public void desconectar() {
+		this.conectado = false;
 	}
 }

@@ -13,6 +13,8 @@ public class LoginDB implements DataAccessObject<Usuario>{
 	private PreparedStatement insertPreparedStatement;
 	private final String selectNombreSQL = "select * from usuarios where nombre = ?;";
 	private PreparedStatement selectPreparedStatement;
+	private final String logueoSQL = "update usuarios set conectado = ? where nombre = ?;";
+	private PreparedStatement updatePreparedStatement;
 	
 	public LoginDB(Connection conexion) {
 		this.conexion = conexion;
@@ -63,6 +65,20 @@ public class LoginDB implements DataAccessObject<Usuario>{
 	public void close() throws Exception {
 		insertPreparedStatement.close();
 		selectPreparedStatement.close();
+	}
+
+	public boolean loguear(Usuario user) throws Exception{
+		updatePreparedStatement = conexion.prepareStatement(logueoSQL);
+		
+		try {
+			updatePreparedStatement.setInt(1, 1);
+			updatePreparedStatement.setString(2, user.getNombre());
+			user.conectar();
+			return true;
+		} catch (Exception e) {
+			user.desconectar();
+			return false;
+		}
 	}
 
 }

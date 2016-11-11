@@ -13,7 +13,7 @@ public class testDataBase {
 	@Test
 	public void insertDBTest() {
 		marvel = new MarvelDB();
-		marvel.connect();
+		marvel.connectDB();
 		String nombre = "juan";
 		String contraseña = "contraseña1";
 		Usuario user = new Usuario();
