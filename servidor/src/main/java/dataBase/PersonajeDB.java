@@ -19,7 +19,7 @@ public class PersonajeDB {
 		this.conexion = conexion;
 	}
 	
-	public boolean create(Personaje pj) throws Exception {
+	public boolean create(String user, Personaje pj) throws Exception {
 		insertPreparedStatement = conexion.prepareStatement(insertSQL);
 		Personaje aux = pj.clone();
 		
@@ -27,7 +27,7 @@ public class PersonajeDB {
 			return false;
 		}
 		//GETTERS PARA INSERTAR EN BD
-		insertPreparedStatement.setString(1, pj.getNombre());
+		insertPreparedStatement.setString(1, user);
 		insertPreparedStatement.setString(2, pj.getClase());
 		insertPreparedStatement.setString(3, pj.calcularAtaque());
 		insertPreparedStatement.setString(4, pj.calcularDefensa());

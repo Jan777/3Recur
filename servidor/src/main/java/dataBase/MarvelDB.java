@@ -66,7 +66,7 @@ public class MarvelDB {
 		}
 	}
 	
-	public boolean crearPersonaje(Usuario user, Personaje pj) {
+	public boolean crearPersonaje(String user, Personaje pj) {
 		try {
 			return pjDB.create(user, pj);
 			
