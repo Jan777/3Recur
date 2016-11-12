@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 
 import user.Usuario;
 
-public class UserDB implements DataAccessObject<Usuario> {
+public class UserDB {
 
 	private Connection conexion;
 	private final String insertSQL = "insert into usuarios (nombre, contraseña) values (?, ?);";
@@ -20,7 +20,6 @@ public class UserDB implements DataAccessObject<Usuario> {
 		this.conexion = conexion;
 	}
 
-	@Override
 	public boolean create(Usuario user) throws Exception {
 		insertPreparedStatement = conexion.prepareStatement(insertSQL);
 		Usuario aux = user.clone();
@@ -36,7 +35,6 @@ public class UserDB implements DataAccessObject<Usuario> {
 		return true;
 	}
 
-	@Override
 	public boolean search(Usuario user) throws Exception {
 		selectPreparedStatement = conexion.prepareStatement(selectNombreSQL);
 
@@ -52,19 +50,6 @@ public class UserDB implements DataAccessObject<Usuario> {
 		return false;
 	}
 
-	@Override
-	public boolean update(Usuario entidad) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean delete(Usuario entidad) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public void close() throws Exception {
 		insertPreparedStatement.close();
 		selectPreparedStatement.close();
