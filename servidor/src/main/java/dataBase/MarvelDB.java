@@ -76,11 +76,11 @@ public class MarvelDB {
 		}
 	}
 	
-	public List<Personaje> buscarPersonajes(Usuario user) {
+	public Personaje buscar(String user) {
 		try {
 			
 			if(user.verEstado())
-				return pjDB.searchAll(user);
+				return pjDB.search(user);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
