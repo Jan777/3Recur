@@ -10,71 +10,101 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
+import gfx.Color;
+import gfx.Fuente;
 import gfx.Pantalla;
 import gfx.SpriteSheet;
+import nivel.Nivel;
 
 
 public class Principal extends Canvas implements Runnable{
 
 	//definicion de constantes
 	private static final long serialVersionUID = 1L;
-	private static final int ALTO = 300;
-	private static final int ANCHO = ALTO/12*9;
+	private static final int ANCHO = 160;
+	private static final int ALTO = ANCHO/12*9;
 	private static final int ESCALA = 3;
-	private static final String NOMBRE = "Mar vel";
+	private static final String NOMBRE = "Marvel";
 	
 	
-	private boolean enEjecucion = false;
+	
 	
 	private JFrame frame;
+	
+	private boolean enEjecucion = false;
+	@SuppressWarnings("unused")
 	private int contadorActualizaciones = 0;
+	
 	//creamos la variable para meter dentro del canvas
 	
-	private BufferedImage imagen = new BufferedImage(ALTO, ANCHO, BufferedImage.TYPE_INT_RGB);
+	private BufferedImage imagen = new BufferedImage(ANCHO, ALTO, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt)imagen.getRaster().getDataBuffer()).getData();
 	
+	//contiene informacion sobre que color tiene cada tile 6 shades para r, 6 para g, 6 para b
+	private int [] colores = new int[6 * 6 * 6];
+	
 	private Pantalla pantalla;
+	
 	private InputHandler input;
 	
+	private Nivel nivel;
+	//coordenada x e y que se mueven por la pantalla.
+	private int x = 0, y = 0;
+	
 	//constructor de nuestra ventana
-	public Principal(){
-		//setea tamaño canvas
-		setMinimumSize(new Dimension(ALTO*ESCALA,ANCHO*ESCALA));
-		setMaximumSize(new Dimension(ALTO*ESCALA,ANCHO*ESCALA));
-		setPreferredSize(new Dimension(ALTO*ESCALA,ANCHO*ESCALA));
-		//Creamos Ventana
-		frame = new JFrame(NOMBRE);
-		//definimos la operacion del boton de cierre
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//definimos el Layout, para que el centro ocupe el maximo posible del tamaño de nuestro frame
-		frame.setLayout(new BorderLayout()); 
-		//agregamos al frame nuestro objeto this(nuestro canvas), en el centro del frame.
-		frame.add(this,BorderLayout.CENTER);
-		// configura el tamaño del frame para que coincida con el setMinimunSize 
-		frame.pack();
-		//No permitimos que se pueda redimensionar
-		frame.setResizable(false);
-		//Definimos como posición relativa en la que se mostrará nuestro frame al centro de la pantalla
-		frame.setLocationRelativeTo(null);
-		//hacemos que el frame sea visible
-		frame.setVisible(true);
-	}
+		public Principal(){
+			//setea tamaño canvas
+			setMinimumSize(new Dimension(ANCHO*ESCALA,ALTO*ESCALA));
+			setMaximumSize(new Dimension(ANCHO*ESCALA,ALTO*ESCALA));
+			setPreferredSize(new Dimension(ANCHO*ESCALA,ALTO*ESCALA));
+			//Creamos Ventana
+			frame = new JFrame(NOMBRE);
+			//definimos la operacion del boton de cierre
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			//definimos el Layout, para que el centro ocupe el maximo posible del tamaño de nuestro frame
+			frame.setLayout(new BorderLayout()); 
+			//agregamos al frame nuestro objeto this(nuestro canvas), en el centro del frame.
+			frame.add(this,BorderLayout.CENTER);
+			// configura el tamaño del frame para que coincida con el setMinimunSize 
+			frame.pack();
+			//No permitimos que se pueda redimensionar
+			frame.setResizable(false);
+			//Definimos como posición relativa en la que se mostrará nuestro frame al centro de la pantalla
+			frame.setLocationRelativeTo(null);
+			//hacemos que el frame sea visible
+			frame.setVisible(true);
+		}
 	
 	public void inicilizar()
 	{
-		pantalla = new Pantalla (ALTO, ANCHO, new SpriteSheet("/SpriteSheetBase.png"));
+		int index = 0;
+		for(int r = 0; r<6;r++)
+		{
+			for(int g = 0; g<6;g++)
+			{
+				for(int b = 0; b<6;b++)
+				{
+					//255 sera transparente
+					int rr = (r*255/5);
+					int gg = (g*255/5);
+					int bb = (b*255/5);
+					colores[index ++] = rr << 16 | gg << 8 | bb;
+				}
+			}
+		}
+		pantalla = new Pantalla (ANCHO, ALTO, new SpriteSheet("/SpriteSheetBase.png"));
 		input = new InputHandler(this);
+		nivel = new Nivel(64,64);
 	}
 	
 	private synchronized  void start() 
 	{
 		enEjecucion = true;
-		new Thread(this).start();
-		
-		
+		new Thread(this).start();	
 	}
 	//Todavia no utilizado
-    private synchronized void stop()
+    @SuppressWarnings("unused")
+	private synchronized void stop()
 	{
 		enEjecucion = false;
 	}
@@ -138,40 +168,32 @@ public class Principal extends Canvas implements Runnable{
 		}
 		
 	}
+	
 	//actualiza elementos a imprimir
 	public void actualizar()
 	{
 		contadorActualizaciones ++;
-		
 		//TECLADO
-		if(input.getArriba().estaPresionada())
-		{
-			pantalla.setyOffset(pantalla.getyOffset()-1);
-			
-		}
-		if(input.getAbajo().estaPresionada())
-		{
-			pantalla.setyOffset(pantalla.getyOffset()+1);
-		}
-		if(input.getIzquierda().estaPresionada())
-		{
-			pantalla.setxOffset(pantalla.getxOffset()-1);
-		}
-		if(input.getDerecha().estaPresionada())
-		{
-			pantalla.setxOffset(pantalla.getxOffset()+1);
-		}
+		
+		if(input.getArriba().estaPresionada()){y--;}
+		if(input.getAbajo().estaPresionada()){y++;}
+		if(input.getIzquierda().estaPresionada()){x--;}
+		if(input.getDerecha().estaPresionada()){x++;}
 		//FIN TECLADO
 		//MOUSE
+		/*
 		if(input.getClick())
 		{
 			//VER COMO HACER PARA QUE EL PERSONAJE SE MUEVA DE A POCO Y NO SEA UN PARPADEO DE UN PUNTO A OTRO, 
 			//SI NO QUE RECORRA UN CAMINO (DIJKTRA?)
-			pantalla.setxOffset(pantalla.getxOffset()+input.getDestino().x);
-			pantalla.setyOffset(pantalla.getyOffset()+input.getDestino().y);
+			x+=input.getDestino().x;
+			y+=input.getDestino().y;
 			input.setClick(false);
 		}
 		//FIN MOUSE
+		*/
+		
+		nivel.actualizar();
 	}
 	//imprime la imagen
 	public void renderizar()
@@ -184,8 +206,42 @@ public class Principal extends Canvas implements Runnable{
 			createBufferStrategy(3);
 			return;
 		}
-		//renderizamos la pantalla
-		pantalla.render(pixels, 0, ALTO);
+		
+		int xOffset = x - (pantalla.getAncho()/2);
+		int yOffset = y - (pantalla.getAlto()/2);
+		
+		nivel.renderTiles(pantalla, xOffset, yOffset);
+		
+		for (int x = 0; x < nivel.getAncho(); x++)
+		{
+			int color = Color.get(-1, -1, -1, 000);
+			if(x % 10 == 0 && x != 0)
+			{
+				color = Color.get(-1, -1, -1, 500);
+			}
+			Fuente.render((x%10) + "", pantalla, 0 + (x * 8), 0, color);
+		}
+		
+		
+		//Renderizamos el mensaje
+		
+		String mensaje = "P";
+		Fuente.render(mensaje, pantalla, x, y, Color.get(-1,-1,-1,011));
+		
+		
+		
+		//Copiamos la informacion de los pixels de la pantalla en el frame principal (juego)
+		for(int y = 0; y < pantalla.getAlto(); y++)
+		{
+			for(int x = 0; x < pantalla.getAncho(); x++)
+			{
+				int codigoColor = pantalla.getPixels()[x+y * pantalla.getAncho()];
+				if(codigoColor < 255)
+				{
+					pixels[x+y*ANCHO] = colores[codigoColor];
+				}
+			}
+		}
 		
 		Graphics g = bs.getDrawGraphics();
 		//imprimimos la imagen que tenemos como atributo

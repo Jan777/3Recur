@@ -26,15 +26,23 @@ public class InputHandler implements KeyListener, MouseListener {
 	}
 	public class Key{
 		private boolean presionada = false;
+		private int cantPulsada = 0;
 		
 		public boolean estaPresionada()
 		{
-			return this.presionada;
+			return presionada;	
+		}
+		public int getCantPulsada()
+		{
+			return cantPulsada;
 		}
 		
 		public void toggle(boolean presionada)
 		{
 			this.presionada = presionada;
+			if(presionada){
+				cantPulsada++;
+			}
 		}
 	}
 	private Key arriba = new Key();
@@ -47,11 +55,13 @@ public class InputHandler implements KeyListener, MouseListener {
 		toggleKey(e.getKeyCode(), true);
 	}
 
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
 		toggleKey(e.getKeyCode(), false);
 		
 	}
+	
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -61,19 +71,21 @@ public class InputHandler implements KeyListener, MouseListener {
 	
 	public void toggleKey(int keyCode, boolean presionada)
 	{
-		if(keyCode == KeyEvent.VK_W)
+
+		
+		if(keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP )
 		{
 			arriba.toggle(presionada);
 		}
-		if(keyCode == KeyEvent.VK_S)
+		if(keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN)
 		{
 			abajo.toggle(presionada);
 		}
-		if(keyCode == KeyEvent.VK_A)
+		if(keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT)
 		{
 			izquierda.toggle(presionada);
 		}
-		if(keyCode == KeyEvent.VK_D)
+		if(keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT)
 		{
 			derecha.toggle(presionada);
 		}

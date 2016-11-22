@@ -7,8 +7,8 @@ import javax.imageio.ImageIO;
 
 public class SpriteSheet {
 	private String path;
-	private int alto;
 	private int ancho;
+	private int alto;
 	//array de rgb (informacion de colores)
 	private int[] pixels;
 	
@@ -27,10 +27,10 @@ public class SpriteSheet {
 			return;
 		}
 		this.path = path;
-		this.alto = imagen.getWidth();
-		this.ancho = imagen.getHeight();
+		this.ancho = imagen.getWidth();
+		this.alto = imagen.getHeight();
 		
-		pixels = imagen.getRGB(0, 0, alto, ancho, null, 0, alto); 
+		pixels = imagen.getRGB(0, 0, ancho, alto, null, 0, ancho); 
 		
 		for(int i = 0; i<pixels.length; i++)
 		{
@@ -49,11 +49,11 @@ public class SpriteSheet {
 	
 	public int getAlto()
 	{
-		return this.alto;
+		return this.ancho;
 	}
 	public int getAncho()
 	{
-		return this.ancho;
+		return this.alto;
 	}
 	public int[] getPixels()
 	{
