@@ -1,7 +1,7 @@
-package Game.Items;
+package items;
 
-import Game.PC;
-import Game.StatListeners.EnergiaMaximaListener;
+import character.PC;
+import statListeners.EnergiaMaximaListener;
 
 public class ReactorARC extends ItemPecho implements EnergiaMaximaListener
 {

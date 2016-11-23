@@ -1,83 +1,125 @@
 package dataBase;
 
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
+import character.Asgardiano;
+import character.Clase;
+import character.Hulk;
+import character.Mutante;
+import character.PC;
 import character.Personaje;
 import user.Usuario;
 
 public class PersonajeDB {
 
 	private Connection conexion;
-	private final String insertPJSQL = "insert into personajes (nombre, pj) values (?, ?);";
+	private final String insertPJSQL = "insert into personajes (nombre, nombrePersonaje) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private PreparedStatement insertPreparedStatement;
 	private final String selectPJNombreSQL = "select * from personajes where nombre = ?;";
 	private PreparedStatement selectPreparedStatement;
-	private final String connectSQL = "update personajes set personaje = ? where nombre = ?;";
-	private PreparedStatement updatePreparedStatement;
+	//private final String connectSQL = "update personajes set personaje = ? where nombre = ?;";
+	//private PreparedStatement updatePreparedStatement;
+	private PC pj;
 
 	public PersonajeDB(Connection conexion) {
 		this.conexion = conexion;
 	}
-	
-	public boolean create(String user, Personaje pj) throws Exception {
-		insertPreparedStatement = conexion.prepareStatement(insertSQL);
-		Personaje aux = pj.clone();
-		
-		if (search(aux)) {
+
+	public boolean create(Usuario user, PC pj) throws Exception {
+		insertPreparedStatement = conexion.prepareStatement(insertPJSQL);
+
+		if (search(user) != null) {
 			return false;
 		}
-		//GETTERS PARA INSERTAR EN BD
-		insertPreparedStatement.setString(1, user);
-		insertPreparedStatement.setString(2, pj.getClase());
-		insertPreparedStatement.setString(3, pj.calcularAtaque());
-		insertPreparedStatement.setString(4, pj.calcularDefensa());
-		insertPreparedStatement.setString(5, pj.calcularVelocidad());
-		insertPreparedStatement.setString(6, pj.calcularDanoMagico());
-		insertPreparedStatement.setString(7, pj.calcularEnergiaMaxima());
-		insertPreparedStatement.setString(8, pj.calcularVidaMaxima());
-		insertPreparedStatement.setString(9, pj.getExp());
-		insertPreparedStatement.setString(10, pj.mostrarItemCabeza());
-		insertPreparedStatement.setString(11, pj.mostrarItemPecho());
-		insertPreparedStatement.setString(12, pj.mostrarItemManoDer());
-		insertPreparedStatement.setString(13, pj.mostrarItemManoIzq());
-		insertPreparedStatement.setString(14, pj.getNivel());
+		// GETTERS PARA INSERTAR EN BD
+		insertPreparedStatement.setString(1, user.getNombre());
+		insertPreparedStatement.setString(2, pj.getName());
+		insertPreparedStatement.setString(3, pj.getRaza());
+		insertPreparedStatement.setString(4, pj.getClase());
+		insertPreparedStatement.setInt(5, pj.getExp());
+		insertPreparedStatement.setString(6, pj.mostrarItemCabeza());
+		insertPreparedStatement.setString(7, pj.mostrarItemPecho());
+		insertPreparedStatement.setString(8, pj.mostrarItemManoDer());
+		insertPreparedStatement.setString(9, pj.mostrarItemManoIzq());
+		insertPreparedStatement.setInt(10, pj.getPuntosDisponibles());
 		insertPreparedStatement.executeUpdate();
 		return true;
 	}
-	
 
 	public void close() throws Exception {
 		insertPreparedStatement.close();
 		selectPreparedStatement.close();
 	}
-	public Personaje search(String user) throws Exception {
-			
-			selectPreparedStatement = conexion.prepareStatement(selectPJNombreSQL);
 
-			selectPreparedStatement.setString(1, user);
+	public Personaje search(Usuario user) throws Exception {
 
-			ResultSet res = selectPreparedStatement.executeQuery();
-			
-			if (res.next()) {
+		selectPreparedStatement = conexion.prepareStatement(selectPJNombreSQL);
+		selectPreparedStatement.setString(1, user.getNombre());
+
+		ResultSet res = selectPreparedStatement.executeQuery();
+
+		if (res.next()) {
+			String nombrePersonaje = res.getString("nombrePersonaje");
+			String raza = res.getString("raza");
+			String clase = res.getString("clase");
+			int experiencia = res.getInt("experiencia");
+
+			switch (raza) {
+			case "Asgardiano":
+				switch (clase) {
+				case "TANQUE":
+					pj = new Asgardiano(nombrePersonaje, Clase.TANQUE);
+					break;
+
+				case "HECHIZERO":
+					pj = new Asgardiano(nombrePersonaje, Clase.HECHIZERO);
+					break;
+
+				case "AGENTE":
+					pj = new Asgardiano(nombrePersonaje, Clase.AGENTE);
+					break;
+				}
+				break;
 				
-				//SETTERS VALORES PARA RECUPERAR DESDE BD
-				pj.setNombre(user);
-				pj.setClase(res.getString("clase"));
-				pj.setAtaque(res.getString("ataque"));
-				pj.setClase(res.getString("defensa"));
-				pj.setClase(res.getString("velocidad"));
-				pj.setClase(res.getString("danoMagico"));
-				pj.setClase(res.getString("energiaMaxima"));
-				pj.setClase(res.getString("vidaMaxima"));
-				pj.setClase(res.getString("exp"));
-				pj.setClase(res.getString("itemCabeza"));
-				pj.setClase(res.getString("itemPecho"));
-				pj.setClase(res.getString("itemManoDer"));
-				pj.setClase(res.getString("itemManoIzq"));
-				pj.setClase(res.getString("nivel"));
-				return pj;
+			case "Hulk":
+				switch (clase) {
+				case "TANQUE":
+					pj = new Hulk(nombrePersonaje, Clase.TANQUE);
+					break;
+
+				case "HECHIZERO":
+					pj = new Hulk(nombrePersonaje, Clase.HECHIZERO);
+					break;
+
+				case "AGENTE":
+					pj = new Hulk(nombrePersonaje, Clase.AGENTE);
+					break;
+				}
+				break;
+				
+			case "Mutante":
+				switch (clase) {
+				case "TANQUE":
+					pj = new Mutante(nombrePersonaje, Clase.TANQUE);
+					break;
+
+				case "HECHIZERO":
+					pj = new Mutante(nombrePersonaje, Clase.HECHIZERO);
+					break;
+
+				case "AGENTE":
+					pj = new Mutante(nombrePersonaje, Clase.AGENTE);
+					break;
+				}
+				break;
 			}
+			pj.ganarExp(experiencia);
+
+			return pj;
 		}
+
 		return null;
 	}
 

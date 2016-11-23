@@ -1,4 +1,4 @@
-package Game.StatListeners;
+package statListeners;
 
 public interface EnergiaMaximaListener
 {

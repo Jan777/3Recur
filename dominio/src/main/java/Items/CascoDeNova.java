@@ -1,7 +1,7 @@
-package Game.Items;
+package items;
 
-import Game.PC;
-import Game.StatListeners.*;
+import character.PC;
+import statListeners.*;
 
 public class CascoDeNova extends ItemCabeza implements SpeedListener, DanoMagicoListener
 {

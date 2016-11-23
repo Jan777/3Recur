@@ -1,4 +1,4 @@
-package Game.Items;
+package items;
 
 
 public abstract class ItemCabeza extends ItemEquipable

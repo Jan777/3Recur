@@ -1,4 +1,4 @@
-package Game;
+package character;
 
 public class Asgardiano extends PC
 {
@@ -16,6 +16,11 @@ public class Asgardiano extends PC
 		this.clase=clase;
 		
 		this.exp=0;
+	}
+
+	@Override
+	public String getRaza() {
+		return "Asgardiano";
 	}
 
 }

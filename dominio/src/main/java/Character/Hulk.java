@@ -1,4 +1,4 @@
-package Game;
+package character;
 
 public class Hulk extends PC
 {
@@ -16,5 +16,10 @@ public class Hulk extends PC
 		this.clase=clase;
 		
 		this.exp=0;
+	}
+
+	@Override
+	public String getRaza() {
+		return "Hulk";
 	}
 }

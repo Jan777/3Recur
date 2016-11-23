@@ -3,10 +3,8 @@ package dataBase;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
-
-import character.Personaje;
-import user.Usuario;
+import user.*;
+import character.*;
 
 public class MarvelDB {
 
@@ -66,7 +64,7 @@ public class MarvelDB {
 		}
 	}
 	
-	public boolean crearPersonaje(String user, Personaje pj) {
+	public boolean crearPersonaje(Usuario user, PC pj) {
 		try {
 			return pjDB.create(user, pj);
 			
@@ -76,7 +74,7 @@ public class MarvelDB {
 		}
 	}
 	
-	public Personaje buscar(String user) {
+	public Personaje buscar(Usuario user) {
 		try {
 			
 			if(user.verEstado())
@@ -93,7 +91,6 @@ public class MarvelDB {
 			if(conexion != null)
 				conexion.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

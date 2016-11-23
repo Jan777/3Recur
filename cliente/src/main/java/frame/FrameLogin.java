@@ -16,6 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import character.PC;
 import client.Cliente;
 import frame.DialogLogin;
 import javax.swing.JTextField;
@@ -35,6 +37,7 @@ public class FrameLogin extends JFrame {
 	protected Cliente client;
 	protected JDialog dialog;
 	private static FrameLogin frame;
+	private PC pj;
 
 	/**
 	 * Launch the application.
@@ -69,14 +72,14 @@ public class FrameLogin extends JFrame {
 		contentPane.setLayout(null);
 		setUndecorated(true);
 		setLocationRelativeTo(null);
-		
+
 		JPanel panelBarra = new JPanel();
 		panelBarra.setBackground(new Color(0, 0, 0));
 		panelBarra.setBounds(0, 0, 488, 23);
 		contentPane.add(panelBarra);
 		panelBarra.setCursor(new Cursor(Cursor.MOVE_CURSOR));
 		panelBarra.setLayout(null);
-		
+
 		JLabel lblLoginMarvelJrpg = new JLabel("Login Marvel JRPG");
 		lblLoginMarvelJrpg.setFont(new Font("Verdana", Font.BOLD, 12));
 		lblLoginMarvelJrpg.setHorizontalAlignment(SwingConstants.CENTER);
@@ -96,79 +99,95 @@ public class FrameLogin extends JFrame {
 				setLocation(getLocation().x + arg0.getX() - x, getLocation().y + arg0.getY() - y);
 			}
 		});
-		
+
 		JPanel panelPpal = new JPanel();
 		panelPpal.setBounds(10, 34, 550, 400);
 		contentPane.add(panelPpal);
 		panelPpal.setLayout(null);
-		
+
 		JPanel panelLogin = new JPanel();
 		panelLogin.setBackground(Color.DARK_GRAY);
 		panelLogin.setBounds(97, 11, 354, 77);
 		panelPpal.add(panelLogin);
 		panelLogin.setLayout(null);
-		
+
 		JLabel lblNombreDeUsuario = new JLabel("Nombre de Usuario");
 		lblNombreDeUsuario.setFont(new Font("Verdana", Font.PLAIN, 12));
 		lblNombreDeUsuario.setForeground(Color.WHITE);
 		lblNombreDeUsuario.setBounds(10, 0, 133, 34);
 		panelLogin.add(lblNombreDeUsuario);
-		
+
 		JLabel labelContraseña = new JLabel("Contrase\u00F1a");
 		labelContraseña.setForeground(Color.WHITE);
 		labelContraseña.setFont(new Font("Verdana", Font.PLAIN, 12));
 		labelContraseña.setBounds(10, 43, 133, 34);
 		panelLogin.add(labelContraseña);
-		
+
 		textFieldNombre = new JTextField();
 		textFieldNombre.setBounds(161, 8, 165, 20);
 		panelLogin.add(textFieldNombre);
 		textFieldNombre.setColumns(10);
-		
+
 		textFieldContraseña = new JTextField();
 		textFieldContraseña.setBounds(161, 51, 165, 20);
 		panelLogin.add(textFieldContraseña);
 		textFieldContraseña.setColumns(10);
-		
+
 		JButton btnConectarse = new JButton("Conectarse");
 		btnConectarse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textFieldNombre.getText().equals("") || textFieldContraseña.getText().equals(""))
+				if (textFieldNombre.getText().equals("") || textFieldContraseña.getText().equals(""))
 					return;
-				
+
 				client = new Cliente(textFieldNombre.getText(), textFieldContraseña.getText());
-				if(client.logIn()) {
+				if (client.logIn()) {
 					dialog = new DialogLogin(frame, "Felicidades!!", "Se conecto con exito al servidor.", true);
 					dialog.setVisible(true);
+
+					pj = client.getPersonaje();
+
+					if (pj != null) {
+						// SE VA A LA VENTANA DEL MAPA CON EL PERSONAJE DE LA BD (SE PASA COMO PARAMETRO EL USUARIO)
+						dispose();
+					}
+
+					else {
+						DialogCreacionPj creacionPj = new DialogCreacionPj(frame);
+						creacionPj.setVisible(true);
+						client.crearPersonaje(pj);
+						// SE VA A LA VENTANA DEL MAPA CON EL PERSONAJE CREADO EN DIALOGCREACION (SE PASA COMO PARAMETRO EL USUARIO) 
+						dispose();
+					}
 				}
-				
-				else{
-					dialog = new DialogLogin(frame, "ERROR", "El nombre y/o la contrase\u00F1a \r\nson invalidos.", true);
+
+				else {
+					dialog = new DialogLogin(frame, "ERROR", "El nombre y/o la contrase\u00F1a \r\nson invalidos.",
+							true);
 					dialog.setVisible(true);
 				}
 			}
 		});
-		
+
 		btnConectarse.setBackground(new Color(0, 0, 51));
 		btnConectarse.setForeground(Color.WHITE);
 		btnConectarse.setBounds(96, 345, 152, 23);
 		panelPpal.add(btnConectarse);
 		btnConectarse.setFocusPainted(false);
 		btnConectarse.setBorderPainted(false);
-		
+
 		JButton buttonRegistrarse = new JButton("Registrarse");
 		buttonRegistrarse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textFieldNombre.getText().equals("") || textFieldContraseña.getText().equals(""))
+				if (textFieldNombre.getText().equals("") || textFieldContraseña.getText().equals(""))
 					return;
-				
+
 				client = new Cliente(textFieldNombre.getText(), textFieldContraseña.getText());
-				if(client.singIn()) {
+				if (client.singIn()) {
 					dialog = new DialogLogin(frame, "Felicidades!!", "Se registro con exito.", true);
 					dialog.setVisible(true);
 				}
-				
-				else{
+
+				else {
 					dialog = new DialogLogin(frame, "ERROR", "El nombre ya esta en uso", true);
 					dialog.setVisible(true);
 				}
@@ -180,12 +199,12 @@ public class FrameLogin extends JFrame {
 		buttonRegistrarse.setBackground(new Color(0, 0, 51));
 		buttonRegistrarse.setBounds(299, 345, 152, 23);
 		panelPpal.add(buttonRegistrarse);
-		
+
 		JLabel lblFondo = new JLabel("");
 		lblFondo.setIcon(new ImageIcon(FrameLogin.class.getResource("/img/marvel2.png")));
 		lblFondo.setBounds(0, 0, 550, 400);
 		panelPpal.add(lblFondo);
-		
+
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.setBounds(487, 0, 83, 23);
 		contentPane.add(btnSalir);
@@ -193,7 +212,7 @@ public class FrameLogin extends JFrame {
 		btnSalir.setForeground(Color.WHITE);
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(client != null)
+				if (client != null)
 					client.logOut();
 				System.exit(1);
 			}
@@ -202,5 +221,9 @@ public class FrameLogin extends JFrame {
 		btnSalir.setFocusPainted(false);
 		btnSalir.setBorderPainted(false);
 		btnSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	}
+	
+	public void setPj(PC pj) {
+		this.pj = pj;
 	}
 }

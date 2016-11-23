@@ -1,6 +1,6 @@
-package Game.Items;
+package items;
 
-import Game.PC;
+import character.PC;
 
 public abstract class ItemEquipable extends Item
 {

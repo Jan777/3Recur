@@ -1,7 +1,7 @@
-package Game.Items;
+package items;
 
-import Game.PC;
-import Game.StatListeners.VidaMaximaListener;
+import character.PC;
+import statListeners.VidaMaximaListener;
 
 public class Simbionte extends ItemPecho implements VidaMaximaListener
 {

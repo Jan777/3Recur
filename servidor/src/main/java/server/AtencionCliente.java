@@ -7,6 +7,7 @@ import java.net.Socket;
 
 import com.google.gson.Gson;
 
+import character.PC;
 import dataBase.MarvelDB;
 import user.Usuario;
 
@@ -17,6 +18,7 @@ public class AtencionCliente extends Thread {
 	private DataOutputStream salida;
 	private MarvelDB marvel;
 	private Usuario user;
+	private PC pj;
 	private Gson gson;
 
 	public AtencionCliente(Socket socket, MarvelDB marvel) {
@@ -39,18 +41,30 @@ public class AtencionCliente extends Thread {
 		boolean res = false;
 		try {
 			while (!"logOut".equals((comando = entrada.readUTF()))) {
-
+				
+				user = gson.fromJson(entrada.readUTF(), Usuario.class);
 				switch (comando) {
 					case "singIn":
-						user = gson.fromJson(entrada.readUTF(), Usuario.class);
 						res = marvel.crearUsuario(user);		
 						responder(res);
 					break;
 					
 					case "logIn":
-						user = gson.fromJson(entrada.readUTF(), Usuario.class);
 						res = marvel.loguearUsuario(user);
 						responder(res);
+					break;
+					
+					case "newPersonaje":
+						pj = gson.fromJson(entrada.readUTF(), PC.class);
+						pj.mostrarPersonaje();
+						if(marvel.crearPersonaje(user, pj)) {
+							salida.writeUTF("OK");
+							salida.writeUTF(gson.toJson(pj));
+						}
+						
+						else {
+							salida.writeUTF("KO");
+						}
 					break;
 				}
 			}
@@ -78,7 +92,6 @@ public class AtencionCliente extends Thread {
 			socket.close();
 			marvel.desconectarUsuario(user);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
