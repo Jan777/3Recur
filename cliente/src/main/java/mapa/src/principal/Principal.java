@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 
 import entidades.Jugador;
 import gfx.Color;
-
+import gfx.Fuente;
 import gfx.Pantalla;
 import gfx.SpriteSheet;
 import nivel.Nivel;
@@ -22,7 +22,7 @@ public class Principal extends Canvas implements Runnable{
 
 	//definicion de constantes
 	private static final long serialVersionUID = 1L;
-	private static final int ANCHO = 400;
+	private static final int ANCHO = 160;
 	private static final int ALTO = ANCHO/12*9;
 	private static final int ESCALA = 3;
 	private static final String NOMBRE = "Marvel";

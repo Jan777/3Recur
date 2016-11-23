@@ -27,7 +27,7 @@ public class Nivel {
 			for (int x = 0; x < ancho; x++) {
 				
 				tiles[x + y * ancho] = Tile.PASTO.getId();
-				if(x * y % 10 < 7)
+				/*if(x * y % 10 < 5)
 				{
 					tiles[x + y * ancho] = Tile.PASTO.getId();
 				}
@@ -35,7 +35,7 @@ public class Nivel {
 				{
 					tiles[x + y * ancho] = Tile.EDIFICIO.getId();
 				}
-				
+				*/
 			}
 		}
 	}
@@ -75,7 +75,7 @@ public class Nivel {
 			e.renderizar(pantalla);
 		}
 	}
-	public Tile getTile(int x, int y)
+	private Tile getTile(int x, int y)
 	{
 		if(x < 0 || x >= ancho || y < 0 || y >= alto)
 			return Tile.VOID;
