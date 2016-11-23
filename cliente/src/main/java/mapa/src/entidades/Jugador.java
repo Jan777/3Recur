@@ -65,24 +65,65 @@ public class Jugador extends Grupo {
 	public void renderizar(Pantalla pantalla) {
 		int xTile = 0;
 		int yTile = 28;
+		
+		//Parametros para animacion
+		int velocidadCaminar = 4;
+		int flipTop = (numPasos >> velocidadCaminar) & 1;
+		int flipBottom = (numPasos >> velocidadCaminar) & 1;
+		if(direccionMovimiento ==  1)
+		{
+			xTile+=2;
+		}
+		else if(direccionMovimiento > 1)
+		{
+			xTile += 4 + ((numPasos >> velocidadCaminar) & 1) * 2;
+			flipTop = (direccionMovimiento -1) % 2;
+			
+		}
 		//modifica el tamaño del tile que estamos renderizando-
 		int modificador = 8*escala;
 		
 		int xOffset = x - modificador / 2;
 		int yOffset = y - modificador / 2 - 4;
 		//renderizamos el personaje
-		pantalla.render(xOffset, yOffset, xTile + yTile * 32, color, 0x00,escala);
+		pantalla.render(xOffset + (modificador * flipTop), yOffset, xTile + yTile * 32, color, flipTop,escala);
 		
-		pantalla.render(xOffset + modificador, yOffset, (xTile + 1) + yTile * 32, color, 0x00,escala);
+		pantalla.render(xOffset + modificador - (modificador * flipTop), yOffset, (xTile + 1) + yTile * 32, color, flipTop,escala);
 		
-		pantalla.render(xOffset , yOffset + modificador, xTile + (yTile + 1) * 32, color, 0x00,escala);
+		pantalla.render(xOffset + (modificador * flipBottom), yOffset + modificador, xTile + (yTile + 1) * 32, color, flipBottom,escala);
 		
-		pantalla.render(xOffset+ modificador, yOffset + modificador, (xTile+1) + (yTile+1) * 32, color, 0x00,escala);
+		pantalla.render(xOffset+ modificador - (modificador * flipBottom), yOffset + modificador, (xTile+1) + (yTile+1) * 32, color, flipBottom,escala);
 		
 	}
 
 	@Override
 	public boolean colision(int xa, int ya) {
+		int xMin = 0;
+		int xMax = 7;
+		int yMin = 3;
+		int yMax = 7;
+		//ciclos para recorrer las cuatro direcciones del sector del sprite que va a ser caja colision
+		for(int x = xMin; x < xMax; x++)
+		{
+			if(esTileSolido(xa,ya,x,yMin))
+				return true;
+		}
+		for(int x = xMin; x < xMax; x++)
+		{
+			if(esTileSolido(xa,ya,x,yMax))
+				return true;
+		}
+		for(int y = yMin; y < yMax; y++)
+		{
+			if(esTileSolido(xa,ya,xMin,y))
+				return true;
+		}
+		for(int y = yMin; y < yMax; y++)
+		{
+			if(esTileSolido(xa,ya,xMax,y))
+				return true;
+		}
+		
 
 		return false;
 	}

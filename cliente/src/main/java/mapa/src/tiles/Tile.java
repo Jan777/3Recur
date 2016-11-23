@@ -7,9 +7,9 @@ import nivel.Nivel;
 public abstract class Tile {
 	
 	public static final Tile[] tiles = new Tile[256];
-	public static final Tile VOID = new TileBasico(0,0,0, Color.get(000, -1, -1, -1));
+	public static final Tile VOID = new TileSolidoBasico(0,0,0, Color.get(000, -1, -1, -1));
 	public static final Tile PASTO = new TileBasico(2,2,0, Color.get(-1, 131, 141, -1));
-	public static final Tile EDIFICIO = new TileBasico(1,1,0, Color.get(-1, 333, -1, -1));
+	public static final Tile EDIFICIO = new TileSolidoBasico(1,1,0, Color.get(-1, 333, -1, -1));
 	//public static final Tile CALLE = new TileBasico(1,1,0, Color.get(-1, 222, -1, -1));
 	protected byte id;
 	protected boolean solido;
