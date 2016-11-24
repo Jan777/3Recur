@@ -20,6 +20,7 @@ public class MarvelDB {
 		try {
 			conexion = DriverManager.getConnection("jdbc:sqlite:" + RUTA);
 			userDB = new UserDB(conexion);
+			pjDB = new PersonajeDB(conexion);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -66,6 +67,7 @@ public class MarvelDB {
 	
 	public boolean crearPersonaje(Usuario user, PC pj) {
 		try {
+			
 			return pjDB.create(user, pj);
 			
 		} catch (Exception e) {
@@ -74,9 +76,8 @@ public class MarvelDB {
 		}
 	}
 	
-	public Personaje buscar(Usuario user) {
+	public PC buscarPersonaje(Usuario user) {
 		try {
-			
 			if(user.verEstado())
 				return pjDB.search(user);
 			

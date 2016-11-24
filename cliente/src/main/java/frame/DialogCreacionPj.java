@@ -47,6 +47,8 @@ public class DialogCreacionPj extends JDialog {
 	 */
 	public DialogCreacionPj(FrameLogin padre) {
 		super(padre, "Creacion del Personaje", true);
+		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		setLocationRelativeTo(padre);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
@@ -124,9 +126,7 @@ public class DialogCreacionPj extends JDialog {
 					personaje=new Asgardiano(textField.getText(),clasePersonaje);
 				if(raza.isSelected(razaMutante.getModel()))
 					personaje=new Mutante(textField.getText(),clasePersonaje);
-				//personaje.mostrarPersonaje();				
-				//CharacterStats cs= new CharacterStats(personaje);
-				//cs.setVisible(true);
+				
 				padre.setPj(personaje);
 				dispose();
 			}

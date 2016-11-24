@@ -1,13 +1,15 @@
 package client;
 
 import java.io.DataInputStream;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
 import com.google.gson.Gson;
 
+import character.Asgardiano;
+import character.Hulk;
+import character.Mutante;
 import character.PC;
 import user.Usuario;
 
@@ -19,7 +21,7 @@ public class Cliente {
 	private final int PUERTO = 50000;
 	private final String HOST = "localhost";
 	private DataInputStream entrada;
-	private DataOutput salida;
+	private DataOutputStream salida;
 	private Gson gson;
 	
 	public Cliente(String nombre, String contraseña) {
@@ -31,7 +33,7 @@ public class Cliente {
 			gson = new Gson();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 	
 	public boolean logIn() {
@@ -70,6 +72,8 @@ public class Cliente {
 	
 	public boolean singIn() {
 		try {
+			entrada = new DataInputStream(socket.getInputStream());
+			salida = new DataOutputStream(socket.getOutputStream());
 			salida.writeUTF("singIn");
 			salida.writeUTF(gson.toJson(user));
 			
@@ -89,7 +93,22 @@ public class Cliente {
 			salida.writeUTF(gson.toJson(user));
 			
 			if("OK".equals(entrada.readUTF())) {
-				this.pj = gson.fromJson(entrada.readUTF(), PC.class);
+				String raza = entrada.readUTF();
+				
+				switch (raza) {
+				case "Asgardiano":
+					pj = gson.fromJson(entrada.readUTF(), Asgardiano.class);
+					break;
+					
+				case "Hulk":
+					pj = gson.fromJson(entrada.readUTF(), Hulk.class);
+					break;
+					
+				case "Mutante":
+					pj = gson.fromJson(entrada.readUTF(), Mutante.class);
+					break;
+				}
+				
 				return pj;
 			}
 		} catch (IOException e) {
@@ -103,10 +122,26 @@ public class Cliente {
 		try {
 			salida.writeUTF("newPersonaje");
 			salida.writeUTF(gson.toJson(user));
+			salida.writeUTF(gson.toJson(pj.getRaza()));
 			salida.writeUTF(gson.toJson(pj));
 			
 			if("OK".equals(entrada.readUTF())) {
-				this.pj = gson.fromJson(entrada.readUTF(), PC.class);
+				String raza = entrada.readUTF();
+				raza = raza.substring(1, raza.length() - 1);
+				switch (raza) {
+				case "Asgardiano":
+					pj = gson.fromJson(entrada.readUTF(), Asgardiano.class);
+				break;
+				
+				case "Mutante":
+					pj = gson.fromJson(entrada.readUTF(), Mutante.class);
+				break;
+				
+				case "Hulk":
+					pj = gson.fromJson(entrada.readUTF(), Hulk.class);
+				break;
+				}
+				
 				return pj;
 			}
 		} catch (IOException e) {

@@ -30,7 +30,6 @@ public class UserDB {
 
 		insertPreparedStatement.setString(1, user.getNombre());
 		insertPreparedStatement.setString(2, user.getContraseña());
-		System.out.println(user.getNombre()+user.getContraseña());
 		insertPreparedStatement.executeUpdate();
 		return true;
 	}

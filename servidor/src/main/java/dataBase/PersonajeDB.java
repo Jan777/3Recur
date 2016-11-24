@@ -9,13 +9,12 @@ import character.Clase;
 import character.Hulk;
 import character.Mutante;
 import character.PC;
-import character.Personaje;
 import user.Usuario;
 
 public class PersonajeDB {
 
 	private Connection conexion;
-	private final String insertPJSQL = "insert into personajes (nombre, nombrePersonaje) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	private final String insertPJSQL = "insert into personajes (nombre, nombrePersonaje, raza, clase, experiencia, itemCabeza, itemPecho, itemManoDerecha, itemManoIzquierda, puntosDisponibles) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	private PreparedStatement insertPreparedStatement;
 	private final String selectPJNombreSQL = "select * from personajes where nombre = ?;";
 	private PreparedStatement selectPreparedStatement;
@@ -53,7 +52,7 @@ public class PersonajeDB {
 		selectPreparedStatement.close();
 	}
 
-	public Personaje search(Usuario user) throws Exception {
+	public PC search(Usuario user) throws Exception {
 
 		selectPreparedStatement = conexion.prepareStatement(selectPJNombreSQL);
 		selectPreparedStatement.setString(1, user.getNombre());

@@ -145,7 +145,7 @@ public class FrameLogin extends JFrame {
 					dialog.setVisible(true);
 
 					pj = client.getPersonaje();
-
+					
 					if (pj != null) {
 						// SE VA A LA VENTANA DEL MAPA CON EL PERSONAJE DE LA BD (SE PASA COMO PARAMETRO EL USUARIO)
 						dispose();
