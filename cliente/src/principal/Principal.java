@@ -10,6 +10,7 @@ import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import dijktra.Grafo;
 import dijktra.Nodo;
@@ -103,16 +104,11 @@ public class Principal extends Canvas implements Runnable{
 		}
 		pantalla = new Pantalla (ANCHO, ALTO, new SpriteSheet("/SpriteSheetBase.png"));
 		input = new InputHandler(this);
-		nivel = new Nivel("/niveles/nivel_small.png");
+		nivel = new Nivel("/niveles/nivel64_64.png");
 		obs = new Grafo (nivel);
-		jugador = new Jugador(nivel, 10, 11, input, obs);
+		jugador = new Jugador(nivel, 10, 11, input, obs, JOptionPane.showInputDialog(this,"Ingrese nombre"));
 		nivel.addEntidad(jugador);
-		Nodo origen = new Nodo(1,1);
-		Nodo destino = new Nodo (8,8);
-		ArrayList<Nodo> camino = obs.caminoMasCorto(origen, destino);
-		for (Nodo nodo : camino) {
-			System.out.println(nodo.getPosicion().x + " " + nodo.getPosicion().y);
-		}
+		
 		
 		
 		

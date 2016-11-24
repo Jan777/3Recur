@@ -25,13 +25,6 @@ public class Nivel {
 	private String imgPath;
 	private BufferedImage imagen;
 	
-	int xOffMouse;
-	int yOffMouse;
-	
-	int xMinMouse;
-	int yMinMouse;
-	int xMaxMouse;
-	int yMaxMouse;
 	
 	
 	public Nivel(String imgPath) {
@@ -143,9 +136,7 @@ public class Nivel {
 		
 		if (xOffset < 0) 
 			xOffset = 0;
-			
-		
-		
+
 		if (xOffset > ((ancho << 3) - pantalla.getAncho()))
 			xOffset = ((ancho << 3) - pantalla.getAncho());
 		
@@ -156,18 +147,15 @@ public class Nivel {
 			yOffset = ((alto << 3) - pantalla.getAlto());
 		
 		pantalla.setOffset(xOffset, yOffset);
-		yMinMouse = (yOffset >> 3);
-		xMinMouse = (xOffset >> 3);
-		yMaxMouse = (yOffset + pantalla.getAlto() >> 3);
-		xMaxMouse = (xOffset + pantalla.getAncho() >> 3);
+		
+		//yOffset >> 3 representa el ofset desde donde comienza la esquina sup izquierda de lo q se ve en pantalla
 		for (int y = (yOffset >> 3); y < (yOffset + pantalla.getAlto() >> 3) + 1 ; y++)
 		{
 			for (int x = (xOffset >> 3); x < (xOffset + pantalla.getAncho() >> 3) + 1 ; x++) {
 				getTile(x, y).render(pantalla, this, x << 3, y << 3);
 			}
 		}
-		xOffMouse = xOffset;
-		yOffMouse = yOffset;
+
 		
 
 	}
@@ -206,29 +194,7 @@ public class Nivel {
 		return this.obstaculos[i][j];
 	}
 
-	public int getxOffMouse() {
-		return xOffMouse;
-	}
 
-	public int getyOffMouse() {
-		return yOffMouse;
-	}
-
-	public int getxMinMouse() {
-		return xMinMouse;
-	}
-
-	public int getyMinMouse() {
-		return yMinMouse;
-	}
-
-	public int getxMaxMouse() {
-		return xMaxMouse;
-	}
-
-	public int getyMaxMouse() {
-		return yMaxMouse;
-	}
 	
 	
 }

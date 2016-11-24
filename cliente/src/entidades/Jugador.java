@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import dijktra.Grafo;
 import dijktra.Nodo;
 import gfx.Color;
+import gfx.Fuente;
 import gfx.Pantalla;
 import nivel.Nivel;
 import principal.InputHandler;
@@ -14,13 +15,12 @@ public class Jugador extends Grupo {
 	private InputHandler input;
 	private int color = Color.get(-1, 000, 127, 150);
 	private Grafo grafo;
-	private int xOr;
-	private int yOr;
-	
-	public Jugador(Nivel nivel, int x, int y, InputHandler input, Grafo grafo) {
+	private String nombreUsuario;
+	public Jugador(Nivel nivel, int x, int y, InputHandler input, Grafo grafo, String userName) {
 		super(nivel, "Jugador", x, y, 1);
 		this.input = input;
 		this.grafo = grafo;
+		this.nombreUsuario = userName;
 	}
 
 	@Override
@@ -121,7 +121,12 @@ public class Jugador extends Grupo {
 		pantalla.render(xOffset + (modificador * flipBottom), yOffset + modificador, xTile + (yTile + 1) * 32, color, flipBottom,escala);
 		
 		pantalla.render(xOffset+ modificador - (modificador * flipBottom), yOffset + modificador, (xTile+1) + (yTile+1) * 32, color, flipBottom,escala);
+		// renderizamos el nombre de usuario
 		
+		if(nombreUsuario != null)
+		{
+			Fuente.render(nombreUsuario, pantalla, xOffset - ((nombreUsuario.length()-1)/2 * 8), yOffset - 10,Color.get(-1, -1, -1, 555), 1);
+		}
 	}
 
 	@Override
