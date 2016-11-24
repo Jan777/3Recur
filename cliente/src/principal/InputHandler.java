@@ -1,27 +1,26 @@
 package principal;
 
-
-
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import dijktra.Nodo;
+import gfx.Pantalla;
+
 
 public class InputHandler implements KeyListener, MouseListener {
 	
-	private Point destino;
-	private Point actual;
+	private Nodo destino;
 	private boolean click;
+	
 	
 
 	public InputHandler(Principal ppal)
 	{
 		ppal.addKeyListener(this);
 		ppal.addMouseListener(this);
-		this.destino = new Point();
-		this.actual = new Point();
 		this.click = false;
 	}
 	public class Key{
@@ -91,15 +90,23 @@ public class InputHandler implements KeyListener, MouseListener {
 		}
 	}
 	//MOUSE---------------------------------------
+	
+	public  Point mouseAPunto(int x, int y) {
+		Point punto = new Point();
+		System.out.println(x + " "+y);
+		
+
+		return punto;
+	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
-		destino.x = e.getX();
-		destino.y = e.getY();
+	/*	Point puntoDestino = e.getPoint(); 
+	 * //Transformacion de punto obtenido con el mouse a punto real del mapa 
+		destino = new Nodo(puntoDestino.x,puntoDestino.y);
 		click = true;
-		
+		*/
 	}
-
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -123,11 +130,8 @@ public class InputHandler implements KeyListener, MouseListener {
 		// TODO Auto-generated method stub
 		
 	}
-	public Point getActual()
-	{
-		return actual;
-	}
-	public Point getDestino()
+	
+	public Nodo getDestino()
 	{
 		return destino;
 	}
@@ -139,11 +143,7 @@ public class InputHandler implements KeyListener, MouseListener {
 	{
 		this.click = click;
 	}
-	public void refreshActual()
-	{
-		this.actual.x = destino.x;
-		this.actual.y = destino.y;
-	}
+
 	public Key getArriba() {
 		return arriba;
 	}

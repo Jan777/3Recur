@@ -31,12 +31,11 @@ public abstract class Tile {
 	{
 		return id;
 	}
-	public int getObs()
+	public boolean getObs()
 	{
 		if(id == 1)
-			return 5;
-		else
-			return 1;
+			return true;
+		return false;
 	}
 	public boolean esSolido()
 	{

@@ -7,9 +7,12 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import dijktra.Grafo;
+import dijktra.Nodo;
 import entidades.Jugador;
 import entidades.Mutante;
 import gfx.Color;
@@ -22,8 +25,8 @@ public class Principal extends Canvas implements Runnable{
 
 	//definicion de constantes
 	private static final long serialVersionUID = 1L;
-	private static final int ANCHO = 400;
-	private static final int ALTO = ANCHO/12*9;
+	public static final int ANCHO = 400;
+	public static final int ALTO = ANCHO/12*9;
 	private static final int ESCALA = 3;
 	private static final String NOMBRE = "Marvel";
 	
@@ -52,6 +55,7 @@ public class Principal extends Canvas implements Runnable{
 	
 	private Jugador jugador;
 	private Mutante mutante;
+	private Grafo obs;
 	//coordenada x e y que se mueven por la pantalla.
 	
 	
@@ -100,8 +104,22 @@ public class Principal extends Canvas implements Runnable{
 		pantalla = new Pantalla (ANCHO, ALTO, new SpriteSheet("/SpriteSheetBase.png"));
 		input = new InputHandler(this);
 		nivel = new Nivel("/niveles/nivel_small.png");
-		jugador = new Jugador(nivel, 0, 0, input);
+		obs = new Grafo (nivel);
+		jugador = new Jugador(nivel, 10, 11, input, obs);
 		nivel.addEntidad(jugador);
+		Nodo origen = new Nodo(1,1);
+		Nodo destino = new Nodo (8,8);
+		ArrayList<Nodo> camino = obs.caminoMasCorto(origen, destino);
+		for (Nodo nodo : camino) {
+			System.out.println(nodo.getPosicion().x + " " + nodo.getPosicion().y);
+		}
+		
+		
+		
+		
+		
+
+		
 	}
 	
 	private synchronized  void start() 
@@ -134,8 +152,7 @@ public class Principal extends Canvas implements Runnable{
 		
 		//inicializamos la pantalla
 		inicilizar();
-		
-		
+		obs = new Grafo(nivel);
 		while(enEjecucion)
 		{
 			long actual = System.nanoTime();

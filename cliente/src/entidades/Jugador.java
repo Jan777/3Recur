@@ -1,5 +1,9 @@
 package entidades;
 
+import java.util.ArrayList;
+
+import dijktra.Grafo;
+import dijktra.Nodo;
 import gfx.Color;
 import gfx.Pantalla;
 import nivel.Nivel;
@@ -9,13 +13,14 @@ public class Jugador extends Grupo {
 
 	private InputHandler input;
 	private int color = Color.get(-1, 000, 127, 150);
+	private Grafo grafo;
+	private int xOr;
+	private int yOr;
 	
-	
-	
-	public Jugador(Nivel nivel, int x, int y, InputHandler input) {
+	public Jugador(Nivel nivel, int x, int y, InputHandler input, Grafo grafo) {
 		super(nivel, "Jugador", x, y, 1);
 		this.input = input;
-
+		this.grafo = grafo;
 	}
 
 	@Override
@@ -24,10 +29,25 @@ public class Jugador extends Grupo {
 		int ya = 0;
 		
 		// TECLADO
-
+		/*//prueba dijktra 
+		Nodo origen = new Nodo(1,1);//posicion actual del jugador en el mapa
+		 Nodo destino = new Nodo(8,8);
+		  ArrayList <Nodo>recorrido;
+		 
+		  recorrido = grafo.caminoMasCorto(origen , destino);
+		  int i = 0;
+		  while (input.getArriba().estaPresionada() && !recorrido.isEmpty()) {
+			Nodo nodo = recorrido.remove(0);
+			xa = nodo.getPosicion().x;
+			ya = nodo.getPosicion().y;
+			i++;
+		  }
+		  */
+		
 		if (input.getArriba().estaPresionada()) {
 			ya--;
 		}
+		
 		if (input.getAbajo().estaPresionada()) {
 			ya++;
 		}
@@ -38,13 +58,21 @@ public class Jugador extends Grupo {
 			xa++;
 		}
 		// FIN TECLADO
-				// MOUSE
-				/*
-				 * if(input.getClick()) { //VER COMO HACER PARA QUE EL PERSONAJE SE
-				 * MUEVA DE A POCO Y NO SEA UN PARPADEO DE UN PUNTO A OTRO, //SI NO QUE
-				 * RECORRA UN CAMINO (DIJKTRA?) x+=input.getDestino().x;
-				 * y+=input.getDestino().y; input.setClick(false); } //FIN MOUSE
-				 */
+				/*// MOUSE
+			
+		  if(input.getClick()) { 
+			  
+			 Nodo origen = new Nodo(x,y); //posicion actual del jugador en el mapa
+			  ArrayList <Nodo>recorrido;
+			  recorrido = grafo.caminoMasCorto(origen , input.getDestino());
+			  for (Nodo nodo : recorrido) {
+				xa = nodo.getPosicion().x;
+				ya = nodo.getPosicion().y;
+			}
+			  input.setClick(false);
+			  } //FIN MOUSE
+			  */
+			 
 		
 		//si se esta moviendo en alguna direccion
 		if(xa != 0 || ya != 0)

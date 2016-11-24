@@ -16,13 +16,22 @@ public class Nivel {
 
 	// array de ids
 	private byte[] tiles;
-	private int [][] obstaculos;
+	//matriz de obstaculos
+	private boolean [][] obstaculos;
 	private int ancho;
 	private int alto;
 	private List<Entidad> entidades = new ArrayList<Entidad>();
 	
 	private String imgPath;
 	private BufferedImage imagen;
+	
+	int xOffMouse;
+	int yOffMouse;
+	
+	int xMinMouse;
+	int yMinMouse;
+	int xMaxMouse;
+	int yMaxMouse;
 	
 	
 	public Nivel(String imgPath) {
@@ -41,7 +50,7 @@ public class Nivel {
 			this.ancho = 64;
 			this.alto = 64;
 			tiles = new byte[ancho * alto];
-			obstaculos = new int[ancho][alto];
+			obstaculos = new boolean[ancho][alto];
 			this.generarNivel();  
 		}
 		
@@ -56,7 +65,7 @@ public class Nivel {
 			this.ancho = imagen.getWidth();
 			this.alto = imagen.getHeight();
 			tiles = new byte [ancho*alto];
-			obstaculos = new int[ancho][alto];
+			obstaculos = new boolean[ancho][alto];
 			this.cargarTiles();
 			
 		}catch(IOException e){
@@ -85,9 +94,10 @@ public class Nivel {
 				}
 			}
 		}
-		System.out.println("hola don pepito");
+		
 	}
 	
+	@SuppressWarnings("unused")
 	private void guardarNivelEnArchivo()
 	{
 		try
@@ -133,6 +143,8 @@ public class Nivel {
 		
 		if (xOffset < 0) 
 			xOffset = 0;
+			
+		
 		
 		if (xOffset > ((ancho << 3) - pantalla.getAncho()))
 			xOffset = ((ancho << 3) - pantalla.getAncho());
@@ -144,13 +156,19 @@ public class Nivel {
 			yOffset = ((alto << 3) - pantalla.getAlto());
 		
 		pantalla.setOffset(xOffset, yOffset);
-
+		yMinMouse = (yOffset >> 3);
+		xMinMouse = (xOffset >> 3);
+		yMaxMouse = (yOffset + pantalla.getAlto() >> 3);
+		xMaxMouse = (xOffset + pantalla.getAncho() >> 3);
 		for (int y = (yOffset >> 3); y < (yOffset + pantalla.getAlto() >> 3) + 1 ; y++)
 		{
 			for (int x = (xOffset >> 3); x < (xOffset + pantalla.getAncho() >> 3) + 1 ; x++) {
 				getTile(x, y).render(pantalla, this, x << 3, y << 3);
 			}
 		}
+		xOffMouse = xOffset;
+		yOffMouse = yOffset;
+		
 
 	}
 	public void renderizarEntidades(Pantalla pantalla)
@@ -179,4 +197,38 @@ public class Nivel {
 	{
 		this.entidades.add(entidad);
 	}
+	public boolean [][] getObstaculos()
+	{
+		return this.obstaculos;
+	}
+	public boolean getObstaculos(int i, int j)
+	{
+		return this.obstaculos[i][j];
+	}
+
+	public int getxOffMouse() {
+		return xOffMouse;
+	}
+
+	public int getyOffMouse() {
+		return yOffMouse;
+	}
+
+	public int getxMinMouse() {
+		return xMinMouse;
+	}
+
+	public int getyMinMouse() {
+		return yMinMouse;
+	}
+
+	public int getxMaxMouse() {
+		return xMaxMouse;
+	}
+
+	public int getyMaxMouse() {
+		return yMaxMouse;
+	}
+	
+	
 }
