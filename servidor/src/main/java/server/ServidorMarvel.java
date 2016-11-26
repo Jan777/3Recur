@@ -1,9 +1,13 @@
 package server;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Scanner;
 
+import character.PC;
 import dataBase.MarvelDB;
 
 public class ServidorMarvel extends Thread {
@@ -11,14 +15,19 @@ public class ServidorMarvel extends Thread {
 	private MarvelDB marvel;
 	private AtencionCliente atCliente;
 	private ServerSocket server;
-	Socket socket = null;
+	private Socket socket = null;
 	private volatile boolean enFuncionamiento = false;
-	private final int PUERTO = 50000;
+	private int PUERTO = 50000;
+	private ArrayList<PC> lista;
 
 	public ServidorMarvel() {
 		try {
+			Scanner scan = new Scanner(new File("serverConfig.config"));
+			PUERTO = scan.nextInt();
 			marvel = new MarvelDB();
 			server = new ServerSocket(PUERTO);
+			lista = new ArrayList<PC>();
+			scan.close();
 		} catch (IOException e) {
 			try {
 				if (server != null)
@@ -46,7 +55,7 @@ public class ServidorMarvel extends Thread {
 			while (enFuncionamiento) {
 				socket = server.accept();
 
-				atCliente = new AtencionCliente(socket, marvel);
+				atCliente = new AtencionCliente(socket, marvel, lista);
 				atCliente.start();
 			}
 		} catch (IOException e) {

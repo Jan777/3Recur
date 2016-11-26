@@ -1,16 +1,16 @@
 package client;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
-
+import java.util.Scanner;
 import com.google.gson.Gson;
-
 import character.Asgardiano;
 import character.Hulk;
 import character.Mutante;
 import character.PC;
+import principal.Principal;
 import user.Usuario;
 
 public class Cliente {
@@ -18,19 +18,24 @@ public class Cliente {
 	private Usuario user;
 	private Socket socket;
 	private PC pj;
-	private final int PUERTO = 50000;
-	private final String HOST = "localhost";
+	private int PUERTO = 50000;
+	private String HOST = "localhost";
 	private DataInputStream entrada;
 	private DataOutputStream salida;
 	private Gson gson;
+	private Principal mapa;
 	
 	public Cliente(String nombre, String contraseña) {
 		try {
+			Scanner scan = new Scanner(new File("clienteConfig.config"));
+			HOST = scan.nextLine();
+			PUERTO = scan.nextInt();
 			socket = new Socket(HOST, PUERTO);
 			user = new Usuario(nombre, contraseña);
 			entrada = new DataInputStream(socket.getInputStream());
 			salida = new DataOutputStream(socket.getOutputStream());
 			gson = new Gson();
+			scan.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -149,5 +154,34 @@ public class Cliente {
 		}
 		
 		return null;
+	}
+	
+	public boolean conectarPersonaje(PC personaje) {
+		try {
+			
+			this.pj = personaje;
+			salida.writeUTF("conectarPersonaje");
+			salida.writeUTF(gson.toJson(user));
+			mapa = new Principal(socket, pj);
+			mapa.start();
+			
+			if(entrada.readUTF().equals("OK"))
+				return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	public void cerrar() {
+		try {
+			salida.writeUTF("desconectarPersonaje");
+			salida.writeUTF(pj.getName());
+			salida.writeUTF("logOut");
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

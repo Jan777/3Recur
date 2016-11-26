@@ -4,9 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-
+import java.util.ArrayList;
 import com.google.gson.Gson;
-
 import character.Asgardiano;
 import character.Hulk;
 import character.Mutante;
@@ -23,10 +22,12 @@ public class AtencionCliente extends Thread {
 	private Usuario user;
 	private PC pj;
 	private Gson gson;
+	private ArrayList<PC> listaPj;
 
-	public AtencionCliente(Socket socket, MarvelDB marvel) {
+	public AtencionCliente(Socket socket, MarvelDB marvel, ArrayList<PC> lista) {
 		this.socket = socket;
 		this.marvel = marvel;
+		this.listaPj = lista;
 		gson = new Gson();
 
 		try {
@@ -42,23 +43,25 @@ public class AtencionCliente extends Thread {
 	public void run() {
 		String comando;
 		boolean res = false;
+
 		try {
 			while (!"logOut".equals((comando = entrada.readUTF()))) {
 
-				user = gson.fromJson(entrada.readUTF(), Usuario.class);
-
 				switch (comando) {
 				case "singIn":
+					user = gson.fromJson(entrada.readUTF(), Usuario.class);
 					res = marvel.crearUsuario(user);
 					responder(res);
 					break;
 
 				case "logIn":
+					user = gson.fromJson(entrada.readUTF(), Usuario.class);
 					res = marvel.loguearUsuario(user);
 					responder(res);
 					break;
 
 				case "getPersonaje":
+					user = gson.fromJson(entrada.readUTF(), Usuario.class);
 					pj = marvel.buscarPersonaje(user);
 					if (pj != null) {
 						salida.writeUTF("OK");
@@ -72,20 +75,21 @@ public class AtencionCliente extends Thread {
 					break;
 
 				case "newPersonaje":
+					user = gson.fromJson(entrada.readUTF(), Usuario.class);
 					String raza = entrada.readUTF();
 					raza = raza.substring(1, raza.length() - 1);
 					switch (raza) {
 					case "Asgardiano":
 						pj = gson.fromJson(entrada.readUTF(), Asgardiano.class);
-					break;
-					
+						break;
+
 					case "Mutante":
 						pj = gson.fromJson(entrada.readUTF(), Mutante.class);
-					break;
-					
+						break;
+
 					case "Hulk":
 						pj = gson.fromJson(entrada.readUTF(), Hulk.class);
-					break;
+						break;
 					}
 
 					if (marvel.crearPersonaje(user, pj)) {
@@ -96,6 +100,42 @@ public class AtencionCliente extends Thread {
 						salida.writeUTF("KO");
 					}
 					break;
+
+				case "conectarPersonaje":
+					user = gson.fromJson(entrada.readUTF(), Usuario.class);
+					listaPj.add(pj);
+					salida.writeUTF("OK");
+					break;
+
+				case "moverPersonaje":
+					int x = Integer.valueOf(entrada.readUTF());
+					int y = Integer.valueOf(entrada.readUTF());
+					int indice = listaPj.indexOf(pj);
+					listaPj.get(indice).setX(x);
+					listaPj.get(indice).setY(y);
+					int i = 0;
+					salida.writeUTF(gson.toJson(listaPj.size()));
+
+					while (i < listaPj.size()) {
+						salida.writeUTF(gson.toJson(listaPj.get(i).getRaza()));
+						salida.writeUTF(gson.toJson(listaPj.get(i)));
+						i++;
+					}
+					break;
+					
+				case "desconectarPersonaje":
+					String nombre = entrada.readUTF();
+					i = 0;
+					
+					while(i < listaPj.size()) {
+						if(listaPj.get(i).getName().equals(nombre)) {
+							listaPj.remove(i);
+						}
+						
+						i++;
+					}		
+					this.join();
+				break;
 				}
 				salida.flush();
 			}
@@ -104,7 +144,7 @@ public class AtencionCliente extends Thread {
 			res = marvel.desconectarUsuario(user);
 			responder(res);
 
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			close();
 		}
 	}

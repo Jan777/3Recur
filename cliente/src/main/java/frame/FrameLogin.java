@@ -15,8 +15,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
-
 import character.PC;
 import client.Cliente;
 import frame.DialogLogin;
@@ -25,9 +25,6 @@ import javax.swing.SwingConstants;
 
 public class FrameLogin extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	protected int y;
@@ -128,7 +125,7 @@ public class FrameLogin extends JFrame {
 		panelLogin.add(textFieldNombre);
 		textFieldNombre.setColumns(10);
 
-		textFieldContraseña = new JTextField();
+		textFieldContraseña = new JPasswordField();
 		textFieldContraseña.setBounds(161, 51, 165, 20);
 		panelLogin.add(textFieldContraseña);
 		textFieldContraseña.setColumns(10);
@@ -147,7 +144,7 @@ public class FrameLogin extends JFrame {
 					pj = client.getPersonaje();
 					
 					if (pj != null) {
-						// SE VA A LA VENTANA DEL MAPA CON EL PERSONAJE DE LA BD (SE PASA COMO PARAMETRO EL USUARIO)
+						client.conectarPersonaje(pj);
 						dispose();
 					}
 
@@ -155,7 +152,7 @@ public class FrameLogin extends JFrame {
 						DialogCreacionPj creacionPj = new DialogCreacionPj(frame);
 						creacionPj.setVisible(true);
 						client.crearPersonaje(pj);
-						// SE VA A LA VENTANA DEL MAPA CON EL PERSONAJE CREADO EN DIALOGCREACION (SE PASA COMO PARAMETRO EL USUARIO) 
+						client.conectarPersonaje(pj);
 						dispose();
 					}
 				}

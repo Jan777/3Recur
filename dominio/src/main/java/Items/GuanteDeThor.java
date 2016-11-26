@@ -1,7 +1,7 @@
-package Items;
+package items;
 
-import Game.*;
-import StatListeners.*;
+import character.PC;
+import statListeners.*;
 
 public class GuanteDeThor extends ItemMano implements SpeedListener , EvasionListener,AttackListener{
 
