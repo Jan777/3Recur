@@ -1,15 +1,13 @@
-package testing;
+package tests;
 
 import static org.junit.Assert.*;
 
-import java.awt.EventQueue;
-
 import org.junit.Test;
 
-import Game.*;
-import Items.*;
+import character.*;
+import items.*;
 
-public class testeoDelProyecto {
+public class TesteoDelProyecto {
 
 	@Test
 	public void statsAsgardiano() {
@@ -69,7 +67,6 @@ public class testeoDelProyecto {
 	@Test
 	public void mostrarItemCabeza() {
 		PC p = new Mutante("Prueba", Clase.AGENTE);
-		int anterior = p.calcularDefensa();
 		assertTrue(p.mostrarItemCabeza() == "libre");
 		p.equiparItemCabeza(new CascoDeMagneto());
 		assertTrue(p.mostrarItemCabeza() == "Caso de Magneto");
@@ -227,19 +224,22 @@ public class testeoDelProyecto {
 	public void subirPuntos() {
 		PC p = new Hulk("Prueba", Clase.TANQUE);
 		p.ganarExp(29949); // nivel 20
-		assertTrue(p.getPuntosDisponibles() == 3);
+		assertTrue(p.getPuntosDisponibles() == 57);
+		
 		assertTrue(p.getPuntosFuerza() == 0);
 		assertTrue(p.getPuntosDestreza() == 0);
 		assertTrue(p.getPuntosInteligencia() == 0);
 		p.subirFuerza();
 		p.subirDestreza();
 		p.subirInteligencia();
-		p.subirFuerza();
+		for (int i = 0; i < 100; i++) 
+			p.subirInteligencia();
 		p.subirDestreza();
-		p.subirInteligencia();
+		p.subirFuerza();
 		assertTrue(p.getPuntosFuerza() == 1);
 		assertTrue(p.getPuntosDestreza() == 1);
-		assertTrue(p.getPuntosInteligencia() == 1);
+
+		assertTrue(p.getPuntosInteligencia() == 55);
 
 	}
 
@@ -258,11 +258,41 @@ public class testeoDelProyecto {
 		assertTrue(p.getName() == "Prueba");
 
 	}
-
 	@Test
-	public void mostrarPersonaje() {
-		PC p = new Hulk("Prueba", Clase.TANQUE);
-		assertTrue(p.mostrarPersonaje()!="");
+	public void getRazaHulk()
+	{
+		PC p = new Hulk("Prueba", Clase.TANQUE);		
+		assertTrue(p.getRaza() == "Hulk");
+}
+	@Test
+	public void getRazaMutante()
+	{
+		PC p = new Mutante("Prueba", Clase.TANQUE);		
+		assertTrue(p.getRaza().equals("Mutante"));
+		
+	}
+	@Test
+	public void getRazaAsgardiano()
+	{
+		PC p = new Asgardiano("Prueba", Clase.TANQUE);	
+		assertTrue(p.getRaza().equals("Asgardiano"));
 
 	}
+	@Test
+	public void getClase() {
+		PC p = new Asgardiano("Prueba", Clase.TANQUE);
+		assertTrue(p.getClase().equals("TANQUE"));
+	}
+	
+	@Test
+	public void getAndSetXeY()
+	{
+		PC p = new Asgardiano("Prueba", Clase.TANQUE);
+		p.setX(1);
+		p.setY(2);
+		assertTrue(p.getX() == 1);
+		assertTrue(p.getY() == 2);
+	}
+	
 }
+
