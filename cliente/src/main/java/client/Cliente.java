@@ -2,7 +2,6 @@ package client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -122,37 +121,16 @@ public class Cliente {
 		return null;
 	}
 
-	public PC crearPersonaje(PC pj) {
+	public void crearPersonaje(PC pj) {
 		try {
 			salida.writeUTF("newPersonaje");
 			salida.writeUTF(gson.toJson(user));
 			salida.writeUTF(gson.toJson(pj.getRaza()));
 			salida.writeUTF(gson.toJson(pj));
 			
-			if("OK".equals(entrada.readUTF())) {
-				String raza = entrada.readUTF();
-				raza = raza.substring(1, raza.length() - 1);
-				switch (raza) {
-				case "Asgardiano":
-					pj = gson.fromJson(entrada.readUTF(), Asgardiano.class);
-				break;
-				
-				case "Mutante":
-					pj = gson.fromJson(entrada.readUTF(), Mutante.class);
-				break;
-				
-				case "Hulk":
-					pj = gson.fromJson(entrada.readUTF(), Hulk.class);
-				break;
-				}
-				
-				return pj;
-			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		return null;
 	}
 	
 	public boolean conectarPersonaje(PC personaje) {
@@ -171,16 +149,5 @@ public class Cliente {
 		}
 		
 		return false;
-	}
-	
-	public void cerrar() {
-		try {
-			salida.writeUTF("desconectarPersonaje");
-			salida.writeUTF(pj.getName());
-			salida.writeUTF("logOut");
-			socket.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }

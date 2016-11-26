@@ -148,7 +148,7 @@ public class FrameLogin extends JFrame {
 						
 						if (pj != null) {
 							client.conectarPersonaje(pj);
-							dispose();
+							setVisible(false);
 						}
 
 						else {
@@ -156,7 +156,7 @@ public class FrameLogin extends JFrame {
 							creacionPj.setVisible(true);
 							client.crearPersonaje(pj);
 							client.conectarPersonaje(pj);
-							dispose();
+							setVisible(false);
 						}
 					}
 

@@ -8,7 +8,7 @@ import character.*;
 
 public class MarvelDB {
 
-	private final String RUTA = "db/marvelJRPG.db";
+	private final String RUTA = "marvelJRPG.db";
 	private Connection conexion;
 	private UserDB userDB;
 	private PersonajeDB pjDB;

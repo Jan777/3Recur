@@ -92,13 +92,8 @@ public class AtencionCliente extends Thread {
 						break;
 					}
 
-					if (marvel.crearPersonaje(user, pj)) {
-						salida.writeUTF("OK");
-						salida.writeUTF(pj.getRaza());
-						salida.writeUTF(gson.toJson(pj));
-					} else {
-						salida.writeUTF("KO");
-					}
+					marvel.crearPersonaje(user, pj);
+					
 					break;
 
 				case "conectarPersonaje":
