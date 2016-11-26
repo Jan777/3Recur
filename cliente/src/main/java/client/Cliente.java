@@ -2,8 +2,10 @@ package client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 import com.google.gson.Gson;
 import character.Asgardiano;
@@ -25,20 +27,17 @@ public class Cliente {
 	private Gson gson;
 	private Principal mapa;
 	
-	public Cliente(String nombre, String contraseña) {
-		try {
-			Scanner scan = new Scanner(new File("clienteConfig.config"));
-			HOST = scan.nextLine();
-			PUERTO = scan.nextInt();
-			socket = new Socket(HOST, PUERTO);
-			user = new Usuario(nombre, contraseña);
-			entrada = new DataInputStream(socket.getInputStream());
-			salida = new DataOutputStream(socket.getOutputStream());
-			gson = new Gson();
-			scan.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 
+	public Cliente(String nombre, String contraseña) throws UnknownHostException, IOException {
+		Scanner scan = null;
+		scan = new Scanner(new File("clienteConfig.config"));
+		HOST = scan.nextLine();
+		PUERTO = scan.nextInt();
+		socket = new Socket(HOST, PUERTO);
+		user = new Usuario(nombre, contraseña);
+		entrada = new DataInputStream(socket.getInputStream());
+		salida = new DataOutputStream(socket.getOutputStream());
+		gson = new Gson();
+		scan.close();
 	}
 	
 	public boolean logIn() {

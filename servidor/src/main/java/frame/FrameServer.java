@@ -11,6 +11,8 @@ import server.ServidorMarvel;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -50,8 +52,15 @@ public class FrameServer extends JFrame {
 	 * Create the frame.
 	 */
 	public FrameServer() {
-		server = new ServidorMarvel();
-		inicializarVentana();
+		try {
+			server = new ServidorMarvel();
+			inicializarVentana();
+		} catch (IOException e) {
+			DialogLogin dialog = new DialogLogin(this, "ERROR", "El numero de puerto ya esta en uso", true);
+			dialog.setVisible(true);
+			dispose();
+			System.exit(1);
+		}
 	}
 	
 	private void inicializarVentana() {

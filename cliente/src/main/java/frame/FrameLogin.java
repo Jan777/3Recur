@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -136,32 +137,41 @@ public class FrameLogin extends JFrame {
 				if (textFieldNombre.getText().equals("") || textFieldContraseña.getText().equals(""))
 					return;
 
-				client = new Cliente(textFieldNombre.getText(), textFieldContraseña.getText());
-				if (client.logIn()) {
-					dialog = new DialogLogin(frame, "Felicidades!!", "Se conecto con exito al servidor.", true);
-					dialog.setVisible(true);
-
-					pj = client.getPersonaje();
+				try {
+					client = new Cliente(textFieldNombre.getText(), textFieldContraseña.getText());
 					
-					if (pj != null) {
-						client.conectarPersonaje(pj);
-						dispose();
+					if (client.logIn()) {
+						dialog = new DialogLogin(frame, "Felicidades!!", "Se conecto con exito al servidor.", true);
+						dialog.setVisible(true);
+
+						pj = client.getPersonaje();
+						
+						if (pj != null) {
+							client.conectarPersonaje(pj);
+							dispose();
+						}
+
+						else {
+							DialogCreacionPj creacionPj = new DialogCreacionPj(frame);
+							creacionPj.setVisible(true);
+							client.crearPersonaje(pj);
+							client.conectarPersonaje(pj);
+							dispose();
+						}
 					}
 
 					else {
-						DialogCreacionPj creacionPj = new DialogCreacionPj(frame);
-						creacionPj.setVisible(true);
-						client.crearPersonaje(pj);
-						client.conectarPersonaje(pj);
-						dispose();
+						dialog = new DialogLogin(frame, "ERROR", "El nombre y/o la contrase\u00F1a \r\nson invalidos.",
+								true);
+						dialog.setVisible(true);
 					}
-				}
-
-				else {
-					dialog = new DialogLogin(frame, "ERROR", "El nombre y/o la contrase\u00F1a \r\nson invalidos.",
+					
+				} catch (IOException e1) {
+					dialog = new DialogLogin(frame, "ERROR", "No se pudo conectar con el server.",
 							true);
 					dialog.setVisible(true);
 				}
+				
 			}
 		});
 
@@ -178,14 +188,21 @@ public class FrameLogin extends JFrame {
 				if (textFieldNombre.getText().equals("") || textFieldContraseña.getText().equals(""))
 					return;
 
-				client = new Cliente(textFieldNombre.getText(), textFieldContraseña.getText());
-				if (client.singIn()) {
-					dialog = new DialogLogin(frame, "Felicidades!!", "Se registro con exito.", true);
-					dialog.setVisible(true);
-				}
+				try {
+					client = new Cliente(textFieldNombre.getText(), textFieldContraseña.getText());
+					
+					if (client.singIn()) {
+						dialog = new DialogLogin(frame, "Felicidades!!", "Se registro con exito.", true);
+						dialog.setVisible(true);
+					}
 
-				else {
-					dialog = new DialogLogin(frame, "ERROR", "El nombre ya esta en uso", true);
+					else {
+						dialog = new DialogLogin(frame, "ERROR", "El nombre ya esta en uso", true);
+						dialog.setVisible(true);
+					}
+				} catch (IOException e1) {
+					dialog = new DialogLogin(frame, "ERROR", "No se pudo conectar con el server.",
+							true);
 					dialog.setVisible(true);
 				}
 			}

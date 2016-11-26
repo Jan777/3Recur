@@ -1,6 +1,7 @@
 package server;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,29 +18,16 @@ public class ServidorMarvel extends Thread {
 	private ServerSocket server;
 	private Socket socket = null;
 	private volatile boolean enFuncionamiento = false;
-	private int PUERTO = 50000;
+	private int PUERTO;
 	private ArrayList<PC> lista;
 
-	public ServidorMarvel() {
-		try {
-			Scanner scan = new Scanner(new File("serverConfig.config"));
-			PUERTO = scan.nextInt();
-			marvel = new MarvelDB();
-			server = new ServerSocket(PUERTO);
-			lista = new ArrayList<PC>();
-			scan.close();
-		} catch (IOException e) {
-			try {
-				if (server != null)
-					server.close();
-
-				if (marvel != null)
-					marvel.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
-		}
+	public ServidorMarvel() throws IOException {
+		Scanner scan = new Scanner(new File("serverConfig.config"));
+		PUERTO = scan.nextInt();
+		marvel = new MarvelDB();
+		server = new ServerSocket(PUERTO);
+		lista = new ArrayList<PC>();
+		scan.close();
 	}
 
 	@Override
